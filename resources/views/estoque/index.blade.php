@@ -27,15 +27,15 @@
         {{-- Ações --}}
         <div class="flex w-full gap-2 sm:w-auto">
 
-            <a href="#"
-               class="flex flex-1 items-center justify-center rounded-lg bg-orange-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-orange-600 sm:flex-none">
+           <a href="{{ route('estoque.entrada.form') }}"
+            class="flex flex-1 items-center justify-center rounded-lg bg-orange-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-orange-600 sm:flex-none">
 
                 + Entrada
 
             </a>
 
-            <a href="#"
-               class="flex flex-1 items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-semibold text-gray-700 transition hover:bg-gray-50 sm:flex-none">
+            <a href="{{ route('estoque.saida.form') }}"
+            class="flex flex-1 items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-semibold text-gray-700 transition hover:bg-gray-50 sm:flex-none">
 
                 − Saída
 
@@ -44,6 +44,14 @@
         </div>
 
     </div>
+
+    @if(session('success'))
+
+        <div class="mb-6 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-700">
+            {{ session('success') }}
+        </div>
+
+    @endif
 
 
     {{-- Indicadores --}}
@@ -71,7 +79,7 @@
             </p>
 
             <p class="mt-2 text-2xl font-bold text-orange-500">
-                0
+                {{ $estoqueBaixo }}
             </p>
 
         </div>
@@ -85,7 +93,7 @@
             </p>
 
             <p class="mt-2 text-2xl font-bold text-red-500">
-                0
+                {{ $semEstoque }}
             </p>
 
         </div>
@@ -191,7 +199,7 @@
                                 <td class="px-6 py-4">
 
                                     <span class="font-semibold text-gray-900">
-                                        0
+                                        {{ $material->estoque_atual }}
                                     </span>
 
                                     <span class="text-gray-400">
@@ -210,9 +218,25 @@
                                 {{-- Status --}}
                                 <td class="px-6 py-4">
 
-                                    <span class="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
-                                        Normal
-                                    </span>
+                                    @if($material->estoque_atual <= 0)
+
+                                        <span class="inline-flex rounded-full bg-red-100 px-3 py-1 text-xs font-medium text-red-700">
+                                            Sem estoque
+                                        </span>
+
+                                    @elseif($material->estoque_atual <= $material->estoque_minimo)
+
+                                        <span class="inline-flex rounded-full bg-orange-100 px-3 py-1 text-xs font-medium text-orange-700">
+                                            Estoque baixo
+                                        </span>
+
+                                    @else
+
+                                        <span class="inline-flex rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
+                                            Normal
+                                        </span>
+
+                                    @endif
 
                                 </td>
 
@@ -222,19 +246,32 @@
 
                                     <div class="flex justify-end gap-2">
 
-                                        <a href="#"
-                                           class="rounded-lg bg-orange-50 px-3 py-2 text-xs font-semibold text-orange-600 hover:bg-orange-100">
+                                        <button
+                                            type="button"
+                                            onclick="abrirModalEntrada(
+                                                {{ $material->id }},
+                                                '{{ addslashes($material->nome) }}',
+                                                '{{ $material->unidade }}'
+                                            )"
+                                            class="rounded-lg bg-orange-50 px-3 py-2 text-xs font-semibold text-orange-600 transition hover:bg-orange-100">
 
                                             Entrada
 
-                                        </a>
+                                        </button>
 
-                                        <a href="#"
-                                           class="rounded-lg bg-gray-100 px-3 py-2 text-xs font-semibold text-gray-600 hover:bg-gray-200">
+                                        <button
+                                            type="button"
+                                            onclick="abrirModalSaida(
+                                                {{ $material->id }},
+                                                '{{ addslashes($material->nome) }}',
+                                                '{{ $material->unidade }}',
+                                                {{ $material->estoque_atual }}
+                                            )"
+                                            class="rounded-lg bg-gray-100 px-3 py-2 text-xs font-semibold text-gray-600 transition hover:bg-gray-200">
 
                                             Saída
 
-                                        </a>
+                                        </button>
 
                                     </div>
 
@@ -254,6 +291,760 @@
 
     </div>
 
+    {{-- ========================================= --}}
+    {{-- MOVIMENTAÇÕES RECENTES --}}
+    {{-- ========================================= --}}
+
+    <div class="mt-6 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-200">
+
+        {{-- Cabeçalho --}}
+        <div class="border-b border-gray-200 px-5 py-4 sm:px-6">
+
+            <div class="flex items-center justify-between">
+
+                <div>
+
+                    <h2 class="text-base font-semibold text-gray-900 sm:text-lg">
+                        Movimentações recentes
+                    </h2>
+
+                    <p class="mt-1 text-sm text-gray-500">
+                        Últimas movimentações realizadas no estoque.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        @if($movimentacoes->isEmpty())
+
+            {{-- Sem movimentações --}}
+            <div class="px-6 py-10 text-center">
+
+                <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 text-gray-400">
+
+                    <svg class="h-6 w-6"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24">
+
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M4 7h16M4 12h16M4 17h16"/>
+
+                    </svg>
+
+                </div>
+
+                <p class="mt-3 text-sm font-medium text-gray-700">
+                    Nenhuma movimentação registrada.
+                </p>
+
+                <p class="mt-1 text-sm text-gray-500">
+                    As entradas e saídas realizadas aparecerão aqui.
+                </p>
+
+            </div>
+
+        @else
+
+            {{-- Tabela --}}
+            <div class="overflow-x-auto">
+
+                <table class="w-full min-w-[700px] text-left text-sm">
+
+                    <thead class="border-b border-gray-200 bg-gray-50">
+
+                        <tr>
+
+                            <th class="px-6 py-4 font-semibold text-gray-600">
+                                Material
+                            </th>
+
+                            <th class="px-6 py-4 font-semibold text-gray-600">
+                                Tipo
+                            </th>
+
+                            <th class="px-6 py-4 font-semibold text-gray-600">
+                                Quantidade
+                            </th>
+
+                            <th class="px-6 py-4 font-semibold text-gray-600">
+                                Responsável
+                            </th>
+
+                            <th class="px-6 py-4 text-right font-semibold text-gray-600">
+                                Data
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody class="divide-y divide-gray-100">
+
+                        @foreach($movimentacoes as $movimentacao)
+
+                            <tr class="transition hover:bg-gray-50">
+
+                                {{-- Material --}}
+                                <td class="px-6 py-4">
+
+                                    <p class="font-medium text-gray-900">
+                                        {{ $movimentacao->material->nome }}
+                                    </p>
+
+                                    <p class="mt-1 text-xs text-gray-400">
+                                        {{ $movimentacao->material->unidade }}
+                                    </p>
+
+                                    @if($movimentacao->observacao)
+
+                                        <p class="mt-2 max-w-xs text-xs text-gray-500">
+                                            {{ $movimentacao->observacao }}
+                                        </p>
+
+                                    @endif
+
+                                </td>
+
+
+                                {{-- Tipo --}}
+                                <td class="px-6 py-4">
+
+                                    @if($movimentacao->tipo === 'entrada')
+
+                                        <span class="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
+                                            Entrada
+                                        </span>
+
+                                    @else
+
+                                        <span class="inline-flex items-center rounded-full bg-red-100 px-3 py-1 text-xs font-medium text-red-700">
+                                            Saída
+                                        </span>
+
+                                    @endif
+
+                                </td>
+
+
+                                {{-- Quantidade --}}
+                                <td class="px-6 py-4">
+
+                                    @if($movimentacao->tipo === 'entrada')
+
+                                        <span class="font-semibold text-green-600">
+                                            +{{ $movimentacao->quantidade }}
+                                        </span>
+
+                                    @else
+
+                                        <span class="font-semibold text-red-600">
+                                            -{{ $movimentacao->quantidade }}
+                                        </span>
+
+                                    @endif
+
+                                    <span class="text-gray-400">
+                                        {{ $movimentacao->material->unidade }}
+                                    </span>
+
+                                </td>
+
+
+                                {{-- Responsável --}}
+                                <td class="px-6 py-4 text-gray-600">
+                                    {{ $movimentacao->user->name }}
+                                </td>
+
+
+                                {{-- Data --}}
+                                <td class="px-6 py-4 text-right">
+
+                                    <p class="text-gray-600">
+                                        {{ $movimentacao->created_at->format('d/m/Y') }}
+                                    </p>
+
+                                    <p class="mt-1 text-xs text-gray-400">
+                                        {{ $movimentacao->created_at->format('H:i') }}
+                                    </p>
+
+                                </td>
+
+                            </tr>
+
+                        @endforeach
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        @endif
+
+    </div>
+
 </div>
+
+{{-- ========================================= --}}
+{{-- MODAL DE ENTRADA --}}
+{{-- ========================================= --}}
+
+<div id="modalEntrada"
+     class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 px-4">
+
+    <div class="w-full max-w-md rounded-xl bg-white shadow-xl">
+
+        {{-- Cabeçalho --}}
+        <div class="flex items-center justify-between border-b border-gray-200 px-6 py-4">
+
+            <div>
+                <h2 class="text-lg font-semibold text-gray-900">
+                    Dar entrada no estoque
+                </h2>
+
+                <p id="modalMaterialNome"
+                   class="mt-1 text-sm text-gray-500">
+                    Material
+                </p>
+            </div>
+
+            <button
+                type="button"
+                onclick="fecharModalEntrada()"
+                class="rounded-lg p-2 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600">
+
+                <svg class="h-5 w-5"
+                     fill="none"
+                     stroke="currentColor"
+                     viewBox="0 0 24 24">
+
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M6 18L18 6M6 6l12 12"/>
+
+                </svg>
+
+            </button>
+
+        </div>
+
+
+        {{-- Conteúdo --}}
+        <div class="space-y-5 px-6 py-5">
+
+            {{-- Unidade --}}
+            <div class="rounded-lg bg-gray-50 p-4">
+
+                <p class="text-xs font-medium uppercase tracking-wide text-gray-400">
+                    Unidade
+                </p>
+
+                <p id="modalMaterialUnidade"
+                   class="mt-1 font-medium text-gray-900">
+                    unidade
+                </p>
+
+            </div>
+
+
+            {{-- Quantidade --}}
+            <div>
+
+                <label for="quantidadeEntrada"
+                       class="mb-2 block text-sm font-medium text-gray-700">
+
+                    Quantidade da entrada
+
+                </label>
+
+                <input
+                    type="number"
+                    id="quantidadeEntrada"
+                    min="1"
+                    step="1"
+                    placeholder="Digite a quantidade"
+                    class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20">
+
+            </div>
+
+            <p id="erroQuantidadeEntrada"
+            class="mt-2 hidden text-sm font-medium text-red-600">
+                Informe uma quantidade válida.
+            </p>
+
+            {{-- Observação --}}
+            <div>
+
+                <label for="observacaoEntrada"
+                    class="mb-2 block text-sm font-medium text-gray-700">
+
+                    Observação
+                    <span class="font-normal text-gray-400">(opcional)</span>
+
+                </label>
+
+                <textarea
+                    id="observacaoEntrada"
+                    rows="3"
+                    placeholder="Ex: Compra realizada, reposição de estoque..."
+                    class="w-full resize-none rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20"></textarea>
+
+            </div>
+
+        </div>
+
+
+        {{-- Rodapé --}}
+        <div class="flex flex-col-reverse gap-2 border-t border-gray-200 px-6 py-4 sm:flex-row sm:justify-end">
+
+            <button
+                type="button"
+                onclick="fecharModalEntrada()"
+                class="rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-50">
+
+                Cancelar
+
+            </button>
+
+            <button
+                type="button"
+                onclick="confirmarEntrada()"
+                class="rounded-lg bg-orange-500 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-600">
+
+                Confirmar entrada
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+{{-- ========================================= --}}
+{{-- MODAL DE SAÍDA --}}
+{{-- ========================================= --}}
+
+<div id="modalSaida"
+     class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 px-4">
+
+    <div class="w-full max-w-md rounded-xl bg-white shadow-xl">
+
+        {{-- Cabeçalho --}}
+        <div class="flex items-center justify-between border-b border-gray-200 px-6 py-4">
+
+            <div>
+
+                <h2 class="text-lg font-semibold text-gray-900">
+                    Dar saída no estoque
+                </h2>
+
+                <p id="modalSaidaMaterialNome"
+                   class="mt-1 text-sm text-gray-500">
+                    Material
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                onclick="fecharModalSaida()"
+                class="rounded-lg p-2 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600">
+
+                <svg class="h-5 w-5"
+                     fill="none"
+                     stroke="currentColor"
+                     viewBox="0 0 24 24">
+
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M6 18L18 6M6 6l12 12"/>
+
+                </svg>
+
+            </button>
+
+        </div>
+
+
+        {{-- Conteúdo --}}
+        <div class="space-y-5 px-6 py-5">
+
+            {{-- Estoque disponível --}}
+            <div class="rounded-lg bg-gray-50 p-4">
+
+                <p class="text-xs font-medium uppercase tracking-wide text-gray-400">
+                    Estoque disponível
+                </p>
+
+                <p class="mt-1 font-semibold text-gray-900">
+
+                    <span id="modalSaidaEstoque">
+                        0
+                    </span>
+
+                    <span id="modalSaidaUnidade"
+                          class="font-normal text-gray-500">
+                        unidade
+                    </span>
+
+                </p>
+
+            </div>
+
+
+            {{-- Quantidade --}}
+            <div>
+
+                <label for="quantidadeSaida"
+                       class="mb-2 block text-sm font-medium text-gray-700">
+
+                    Quantidade da saída
+
+                </label>
+
+                <input
+                    type="number"
+                    id="quantidadeSaida"
+                    min="1"
+                    step="1"
+                    placeholder="Digite a quantidade"
+                    class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20">
+
+                <p id="erroQuantidadeSaida"
+                class="mt-2 hidden text-sm font-medium text-red-600">
+                </p>
+
+            </div>
+
+
+            {{-- Observação --}}
+            <div>
+
+                <label for="observacaoSaida"
+                       class="mb-2 block text-sm font-medium text-gray-700">
+
+                    Observação
+                    <span class="font-normal text-gray-400">
+                        (opcional)
+                    </span>
+
+                </label>
+
+                <textarea
+                    id="observacaoSaida"
+                    rows="3"
+                    placeholder="Ex: Material entregue ao setor..."
+                    class="w-full resize-none rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20"></textarea>
+
+            </div>
+
+        </div>
+
+
+        {{-- Rodapé --}}
+        <div class="flex flex-col-reverse gap-2 border-t border-gray-200 px-6 py-4 sm:flex-row sm:justify-end">
+
+            <button
+                type="button"
+                onclick="fecharModalSaida()"
+                class="rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-50">
+
+                Cancelar
+
+            </button>
+
+            <button
+                type="button"
+                onclick="confirmarSaida()"
+                class="rounded-lg bg-gray-800 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-gray-900">
+
+                Confirmar saída
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    let materialEntradaId = null;
+
+    function abrirModalEntrada(id, nome, unidade)
+    {
+        materialEntradaId = id;
+
+        document.getElementById('modalMaterialNome').textContent = nome;
+        document.getElementById('modalMaterialUnidade').textContent = unidade;
+
+        document.getElementById('quantidadeEntrada').value = '';
+        document.getElementById('observacaoEntrada').value = '';
+
+        document.getElementById('erroQuantidadeEntrada')
+            .classList.add('hidden');
+
+        const modal = document.getElementById('modalEntrada');
+
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+
+        document.getElementById('quantidadeEntrada').focus();
+    }
+
+
+    function fecharModalEntrada()
+    {
+        const modal = document.getElementById('modalEntrada');
+
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+
+        materialEntradaId = null;
+    }
+
+
+    function confirmarEntrada()
+    {
+        const quantidadeInput = document.getElementById('quantidadeEntrada');
+
+        const quantidade = quantidadeInput.value;
+
+        const erro = document.getElementById('erroQuantidadeEntrada');
+
+
+        if (!quantidade || Number(quantidade) <= 0) {
+
+            erro.classList.remove('hidden');
+
+            quantidadeInput.focus();
+
+            return;
+        }
+
+
+        erro.classList.add('hidden');
+
+
+        const observacao =
+            document.getElementById('observacaoEntrada').value;
+
+
+        const form = document.createElement('form');
+
+        form.method = 'POST';
+
+        form.action = `/estoque/${materialEntradaId}/entrada`;
+
+
+        // CSRF
+        const csrf = document.createElement('input');
+
+        csrf.type = 'hidden';
+
+        csrf.name = '_token';
+
+        csrf.value = document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute('content');
+
+
+        // Quantidade
+        const quantidadeHidden = document.createElement('input');
+
+        quantidadeHidden.type = 'hidden';
+
+        quantidadeHidden.name = 'quantidade';
+
+        quantidadeHidden.value = quantidade;
+
+
+        // Observação
+        const observacaoHidden = document.createElement('input');
+
+        observacaoHidden.type = 'hidden';
+
+        observacaoHidden.name = 'observacao';
+
+        observacaoHidden.value = observacao;
+
+
+        form.appendChild(csrf);
+
+        form.appendChild(quantidadeHidden);
+
+        form.appendChild(observacaoHidden);
+
+
+        document.body.appendChild(form);
+
+        form.submit();
+    }
+
+    let materialSaidaId = null;
+    let estoqueSaidaDisponivel = 0;
+
+    function abrirModalSaida(id, nome, unidade, estoque)
+    {
+        materialSaidaId = id;
+
+        estoqueSaidaDisponivel = estoque;
+
+
+        document.getElementById('modalSaidaMaterialNome').textContent = nome;
+
+        document.getElementById('modalSaidaUnidade').textContent = unidade;
+
+        document.getElementById('modalSaidaEstoque').textContent = estoque;
+
+
+        document.getElementById('quantidadeSaida').value = '';
+
+        document.getElementById('observacaoSaida').value = '';
+
+
+        // Limpa erro anterior
+        const erro = document.getElementById('erroQuantidadeSaida');
+
+        erro.textContent = '';
+
+        erro.classList.add('hidden');
+
+
+        const modal = document.getElementById('modalSaida');
+
+        modal.classList.remove('hidden');
+
+        modal.classList.add('flex');
+
+
+        document.getElementById('quantidadeSaida').focus();
+    }
+
+
+    function fecharModalSaida()
+    {
+        const modal = document.getElementById('modalSaida');
+
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+
+        materialSaidaId = null;
+
+        estoqueSaidaDisponivel = 0;
+    }
+
+    function confirmarSaida()
+    {
+        const quantidadeInput =
+            document.getElementById('quantidadeSaida');
+
+        const quantidade =
+            Number(quantidadeInput.value);
+
+        const erro =
+            document.getElementById('erroQuantidadeSaida');
+
+
+        // Limpa erro anterior
+        erro.classList.add('hidden');
+        erro.textContent = '';
+
+
+        // Quantidade vazia ou inválida
+        if (!quantidade || quantidade <= 0) {
+
+            erro.textContent =
+                'Informe uma quantidade válida.';
+
+            erro.classList.remove('hidden');
+
+            quantidadeInput.focus();
+
+            return;
+        }
+
+
+        // Quantidade maior que o estoque
+        if (quantidade > estoqueSaidaDisponivel) {
+
+            erro.textContent =
+                'A quantidade não pode ser maior que o estoque disponível.';
+
+            erro.classList.remove('hidden');
+
+            quantidadeInput.focus();
+
+            return;
+        }
+
+
+        // Tudo certo
+        const form = document.createElement('form');
+
+        form.method = 'POST';
+
+        form.action = `/estoque/${materialSaidaId}/saida`;
+
+
+        // CSRF
+        const csrf = document.createElement('input');
+
+        csrf.type = 'hidden';
+
+        csrf.name = '_token';
+
+        csrf.value = document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute('content');
+
+
+        // Quantidade
+        const quantidadeHidden = document.createElement('input');
+
+        quantidadeHidden.type = 'hidden';
+
+        quantidadeHidden.name = 'quantidade';
+
+        quantidadeHidden.value = quantidade;
+
+
+        // Observação
+        const observacaoHidden = document.createElement('input');
+
+        observacaoHidden.type = 'hidden';
+
+        observacaoHidden.name = 'observacao';
+
+        observacaoHidden.value =
+            document.getElementById('observacaoSaida').value;
+
+
+        form.appendChild(csrf);
+
+        form.appendChild(quantidadeHidden);
+
+        form.appendChild(observacaoHidden);
+
+
+        document.body.appendChild(form);
+
+        form.submit();
+    }
+
+</script>
 
 @endsection

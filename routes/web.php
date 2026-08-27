@@ -2,13 +2,26 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MaterialController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EstoqueController;
+use Illuminate\Support\Facades\Route;
 
+
+/*
+|--------------------------------------------------------------------------
+| Página inicial
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+/*
+|--------------------------------------------------------------------------
+| Dashboard
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -37,24 +50,58 @@ Route::middleware('auth')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| Materiais - Setores
+| Materiais e Estoque - Setores
 |--------------------------------------------------------------------------
 */
 
 Route::middleware(['auth', 'verified', 'role:setor'])->group(function () {
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Estoque
+    |--------------------------------------------------------------------------
+    */
+
     Route::get('/estoque', [EstoqueController::class, 'index'])
-    ->middleware('auth')
-    ->name('estoque.index');
+        ->name('estoque.index');
+
+
+    // Entrada em lote
+    Route::get('/estoque/entrada', [EstoqueController::class, 'entradaForm'])
+        ->name('estoque.entrada.form');
+
+    // Processar entrada em lote
+    Route::post('/estoque/entrada', [EstoqueController::class, 'entradaLote'])
+        ->name('estoque.entrada.lote');
+
+    // Saida em lote
+    Route::get('/estoque/saida', [EstoqueController::class, 'saidaForm'])
+    ->name('estoque.saida.form');
+
+    // Processar saida em lote
+    Route::post('/estoque/saida', [EstoqueController::class, 'saidaLote'])
+        ->name('estoque.saida.lote');
+
+
+    // Entrada individual
+    Route::post('/estoque/{material}/entrada', [EstoqueController::class, 'entrada'])
+        ->name('estoque.entrada');
+
+
+    // Saída individual
+    Route::post('/estoque/{material}/saida', [EstoqueController::class, 'saida'])
+        ->name('estoque.saida');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Materiais
+    |--------------------------------------------------------------------------
+    */
 
     Route::get('/materiais', [MaterialController::class, 'index'])
         ->name('materiais.index');
-
-    Route::get('/materiais/criar', [MaterialController::class, 'create'])
-        ->name('materiais.create');
-
-    Route::post('/materiais', [MaterialController::class, 'store'])
-        ->name('materiais.store');
 
     Route::get('/materiais/create', [MaterialController::class, 'create'])
         ->name('materiais.create');
@@ -76,5 +123,11 @@ Route::middleware(['auth', 'verified', 'role:setor'])->group(function () {
 
 });
 
+
+/*
+|--------------------------------------------------------------------------
+| Autenticação
+|--------------------------------------------------------------------------
+*/
 
 require __DIR__.'/auth.php';

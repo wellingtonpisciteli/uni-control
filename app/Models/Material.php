@@ -26,4 +26,9 @@ class Material extends Model
     {
         return $this->belongsTo(Setor::class);
     }
+
+    public function movimentacoes()
+    {
+        return $this->hasMany(Movimentacao::class);
+    }
 }
