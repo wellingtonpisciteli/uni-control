@@ -368,8 +368,9 @@
                             {{-- Ações --}}
                             <td class="px-6 py-4">
 
-                                <div class="flex justify-end">
+                                <div class="flex justify-end gap-2">
 
+                                    {{-- EDITAR --}}
                                     <a
                                         href="{{ route('materiais.edit', $material) }}"
                                         class="inline-flex items-center gap-2 rounded-lg bg-gray-100 px-4 py-2 text-xs font-semibold text-gray-700 transition hover:bg-orange-50 hover:text-orange-600"
@@ -386,13 +387,51 @@
                                             <path
                                                 stroke-linecap="round"
                                                 stroke-linejoin="round"
-                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.5-7.5a2.121 2.121 0 113 3L12 15l-4 1 1-4 8.5-8.5z"
+                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h5m4-14l2-2a2.121 2.121 0 113 3l-8.5 8.5L10 15l1-4z"
                                             />
                                         </svg>
 
                                         Editar
 
                                     </a>
+
+
+                                    {{-- EXCLUIR --}}
+                                    <form
+                                        action="{{ route('materiais.destroy', $material) }}"
+                                        method="POST"
+                                        class="form-excluir-material"
+                                    >
+
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button
+                                            type="button"
+                                            onclick="abrirModalExclusao({{ $material->id }}, @js($material->nome))"
+                                            class="inline-flex items-center gap-2 rounded-lg bg-red-50 px-4 py-2 text-xs font-semibold text-red-600 transition hover:bg-red-100 hover:text-red-700 focus:outline-none focus:ring-4 focus:ring-red-100"
+                                        >
+
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                class="h-4 w-4"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    d="M6 7h12M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2m2 0v12a2 2 0 01-2 2H9a2 2 0 01-2-2V7m3 4v6m4-6v6"
+                                                />
+                                            </svg>
+
+                                            Excluir
+
+                                        </button>
+
+                                    </form>
 
                                 </div>
 
@@ -413,5 +452,134 @@
 </div>
 
 </div>
+
+{{-- ========================================= --}}
+{{-- MODAL DE CONFIRMAÇÃO DE EXCLUSÃO --}}
+{{-- ========================================= --}}
+
+<div
+    id="modalExclusao"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 px-4"
+>
+
+    <div
+        class="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl"
+    >
+
+        {{-- Ícone --}}
+        <div class="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-red-100 text-red-600">
+
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 9v4m0 4h.01M10.29 3.86l-7.36 12a2 2 0 001.71 3h14.72a2 2 0 001.71-3l-7.36-12a2 2 0 00-3.42 0z"
+                />
+            </svg>
+
+        </div>
+
+
+        <h2 class="text-lg font-bold text-gray-900">
+            Excluir material?
+        </h2>
+
+        <p class="mt-2 text-sm leading-6 text-gray-500">
+            Tem certeza que deseja excluir
+            <span
+                id="nomeMaterialExclusao"
+                class="font-semibold text-gray-700"
+            ></span>?
+            Essa ação não poderá ser desfeita.
+        </p>
+
+
+        {{-- Botões --}}
+        <div class="mt-6 flex justify-end gap-3">
+
+            <button
+                type="button"
+                onclick="fecharModalExclusao()"
+                class="rounded-xl bg-gray-100 px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-200"
+            >
+                Cancelar
+            </button>
+
+            <button
+                type="button"
+                onclick="confirmarExclusao()"
+                class="rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-100"
+            >
+                Excluir material
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    let materialParaExcluir = null;
+
+    function abrirModalExclusao(id, nome) {
+
+        materialParaExcluir = id;
+
+        document.getElementById('nomeMaterialExclusao').textContent = nome;
+
+        const modal = document.getElementById('modalExclusao');
+
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+
+    function fecharModalExclusao() {
+
+        materialParaExcluir = null;
+
+        const modal = document.getElementById('modalExclusao');
+
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+
+
+    function confirmarExclusao() {
+
+        if (!materialParaExcluir) {
+            return;
+        }
+
+        const form = document.querySelector(
+            `.form-excluir-material[action$="/${materialParaExcluir}"]`
+        );
+
+        if (form) {
+            form.submit();
+        }
+    }
+
+
+    // Fecha ao clicar fora do modal
+    document.getElementById('modalExclusao').addEventListener('click', function(event) {
+
+        if (event.target === this) {
+            fecharModalExclusao();
+        }
+
+    });
+
+</script>
 
 @endsection

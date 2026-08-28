@@ -2,360 +2,427 @@
 
 @section('content')
 
-<div class="min-h-screen bg-gray-50 px-4 py-6 sm:px-6 lg:px-8">
+<div class="px-4 py-6 sm:px-6 lg:px-8">
 
 <div class="w-full">
 
-    {{-- CABEÇALHO --}}
-    <div class="mb-8">
+{{-- ========================================= --}}
+{{-- CABEÇALHO --}}
+{{-- ========================================= --}}
 
-        <a
-            href="{{ route('usuarios.index') }}"
-            class="mb-5 inline-flex items-center gap-2 text-sm font-medium text-gray-500 transition hover:text-orange-500"
-        >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-            >
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M15 19l-7-7 7-7"
-                />
-            </svg>
+<div class="mb-6 sm:mb-8">
 
-            Voltar para usuários
-        </a>
+
+<a
+    href="{{ route('usuarios.index') }}"
+    class="inline-flex items-center gap-2 text-sm font-medium text-gray-500 transition hover:text-orange-500"
+>
+
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-4 w-4"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="2"
+    >
+
+        <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15 19l-7-7 7-7"
+        />
+
+    </svg>
+
+    Voltar para usuários
+
+</a>
+
+
+<div class="mt-5">
+
+    <p class="text-sm font-semibold text-orange-500">
 
         @if(Auth::user()->setor)
 
-            <p class="mt-1 text-sm font-medium text-orange-500">
-                {{ Auth::user()->setor->nome }}
-            </p>
+            {{ Auth::user()->setor->nome }}
 
         @else
 
-            <p class="mt-1 text-sm font-medium text-orange-500">
-                Administração
-            </p>
+            Administração
 
         @endif
 
-        <h1 class="mt-1 text-3xl font-bold tracking-tight text-gray-900">
-            Editar usuário
-        </h1>
+    </p>
 
-        <p class="mt-2 text-sm text-gray-500">
-            Atualize as informações e as permissões de acesso deste usuário.
+
+    <h1 class="mt-1 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+        Editar usuário
+    </h1>
+
+
+    <p class="mt-2 text-sm text-gray-500 sm:text-base">
+        Atualize as informações e as permissões de acesso deste usuário.
+    </p>
+
+</div>
+
+
+</div>
+
+{{-- ========================================= --}}
+{{-- CARD --}}
+{{-- ========================================= --}}
+
+<div class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+
+{{-- ========================================= --}}
+{{-- CABEÇALHO DO CARD --}}
+{{-- ========================================= --}}
+
+<div class="border-b border-gray-200 px-5 py-5 sm:px-6">
+
+
+<div class="flex items-center gap-4">
+
+    {{-- ÍCONE --}}
+
+    <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-orange-500">
+
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+        >
+
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+            />
+
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M4.5 20.25a7.5 7.5 0 0115 0"
+            />
+
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M19 8v6m3-3h-6"
+            />
+
+        </svg>
+
+    </div>
+
+
+    <div>
+
+        <h2 class="text-base font-semibold text-gray-900 sm:text-lg">
+            Informações do usuário
+        </h2>
+
+        <p class="mt-1 text-sm text-gray-500">
+            Atualize os dados de acesso do usuário.
         </p>
 
     </div>
 
+</div>
 
-    {{-- CARD --}}
-    <div class="w-full overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
 
-        {{-- CABEÇALHO DO CARD --}}
-        <div class="border-b border-gray-100 px-6 py-6 sm:px-8 lg:px-10">
+</div>
 
-            <div class="flex items-center gap-4">
+{{-- ========================================= --}}
+{{-- FORMULÁRIO --}}
+{{-- ========================================= --}}
 
-                {{-- ÍCONE --}}
-                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-orange-500">
+<form
+    id="usuario-form"
+    action="{{ route('usuarios.update', $usuario) }}"
+    method="POST"
+>
 
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        stroke-width="2"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
-                        />
 
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M4.5 20.25a7.5 7.5 0 0115 0"
-                        />
+@csrf
+@method('PUT')
 
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M19 8v6m3-3h-6"
-                        />
-                    </svg>
 
-                </div>
+<div class="px-5 py-6 sm:px-6">
 
-                <div>
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 
-                    <h2 class="text-lg font-semibold text-gray-900">
-                        Informações do usuário
-                    </h2>
 
-                    <p class="mt-1 text-sm text-gray-500">
-                        Atualize os dados de acesso do usuário.
-                    </p>
+        {{-- ========================================= --}}
+        {{-- NOME --}}
+        {{-- ========================================= --}}
 
-                </div>
+        <div>
 
-            </div>
+            <label
+                for="name"
+                class="mb-2 block text-sm font-semibold text-gray-700"
+            >
+
+                Nome completo
+
+                <span class="text-red-500">*</span>
+
+            </label>
+
+
+            <input
+                type="text"
+                id="name"
+                name="name"
+                value="{{ old('name', $usuario->name) }}"
+                placeholder="Ex.: João da Silva"
+                required
+                autofocus
+                class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20"
+            >
+
+
+            @error('name')
+
+                <p class="mt-2 text-sm font-medium text-red-500">
+                    {{ $message }}
+                </p>
+
+            @enderror
 
         </div>
 
 
-        {{-- FORMULÁRIO --}}
-        <form
-            id="usuario-form"
-            action="{{ route('usuarios.update', $usuario) }}"
-            method="POST"
-        >
+        {{-- ========================================= --}}
+        {{-- E-MAIL --}}
+        {{-- ========================================= --}}
 
-            @csrf
-            @method('PUT')
+        <div>
 
+            <label
+                for="email"
+                class="mb-2 block text-sm font-semibold text-gray-700"
+            >
 
-            <div class="px-6 py-8 sm:px-8 lg:px-10">
+                E-mail
 
-                <div class="grid grid-cols-1 gap-7 md:grid-cols-2">
+                <span class="text-red-500">*</span>
 
-                    {{-- NOME --}}
-                    <div>
-
-                        <label
-                            for="name"
-                            class="mb-2.5 block text-sm font-semibold text-gray-700"
-                        >
-                            Nome completo
-                            <span class="text-red-500">*</span>
-                        </label>
-
-                        <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            value="{{ old('name', $usuario->name) }}"
-                            placeholder="Ex.: João da Silva"
-                            required
-                            autofocus
-                            class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition focus:border-orange-500 focus:ring-4 focus:ring-orange-100"
-                        >
-
-                        @error('name')
-
-                            <p class="mt-2 text-sm text-red-500">
-                                {{ $message }}
-                            </p>
-
-                        @enderror
-
-                    </div>
+            </label>
 
 
-                    {{-- E-MAIL --}}
-                    <div>
-
-                        <label
-                            for="email"
-                            class="mb-2.5 block text-sm font-semibold text-gray-700"
-                        >
-                            E-mail
-                            <span class="text-red-500">*</span>
-                        </label>
-
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value="{{ old('email', $usuario->email) }}"
-                            placeholder="Ex.: joao@empresa.com"
-                            required
-                            class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition focus:border-orange-500 focus:ring-4 focus:ring-orange-100"
-                        >
-
-                        @error('email')
-
-                            <p class="mt-2 text-sm text-red-500">
-                                {{ $message }}
-                            </p>
-
-                        @enderror
-
-                    </div>
+            <input
+                type="email"
+                id="email"
+                name="email"
+                value="{{ old('email', $usuario->email) }}"
+                placeholder="Ex.: joao@empresa.com"
+                required
+                class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20"
+            >
 
 
-                    {{-- PERFIL --}}
-                    <div class="md:col-span-2">
+            @error('email')
 
-                        <label
-                            for="role"
-                            class="mb-2.5 block text-sm font-semibold text-gray-700"
-                        >
-                            Perfil de acesso
-                            <span class="text-red-500">*</span>
-                        </label>
-
-                        <select
-                            id="role"
-                            name="role"
-                            required
-                            class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3.5 text-sm text-gray-900 outline-none transition focus:border-orange-500 focus:ring-4 focus:ring-orange-100"
-                        >
-
-                            <option
-                                value="setor"
-                                {{ old('role', $usuario->role) === 'setor' ? 'selected' : '' }}
-                            >
-                                Usuário
-                            </option>
-
-                            <option
-                                value="lider"
-                                {{ old('role', $usuario->role) === 'lider' ? 'selected' : '' }}
-                            >
-                                Líder
-                            </option>
-
-                        </select>
-
-                        <p class="mt-2 text-xs text-gray-400">
-                            O líder possui permissões adicionais dentro do setor.
-                        </p>
-
-                        @error('role')
-
-                            <p class="mt-2 text-sm text-red-500">
-                                {{ $message }}
-                            </p>
-
-                        @enderror
-
-                    </div>
-
-
-                    {{-- NOVA SENHA --}}
-                    <div>
-
-                        <label
-                            for="password"
-                            class="mb-2.5 block text-sm font-semibold text-gray-700"
-                        >
-                            Nova senha
-
-                            <span class="font-normal text-gray-400">
-                                (opcional)
-                            </span>
-                        </label>
-
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            minlength="8"
-                            placeholder="Digite uma nova senha"
-                            class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition focus:border-orange-500 focus:ring-4 focus:ring-orange-100"
-                        >
-
-                        <p class="mt-2 text-xs text-gray-400">
-                            Deixe em branco para manter a senha atual.
-                        </p>
-
-                        @error('password')
-
-                            <p class="mt-2 text-sm text-red-500">
-                                {{ $message }}
-                            </p>
-
-                        @enderror
-
-                    </div>
-
-
-                    {{-- CONFIRMAR SENHA --}}
-                    <div>
-
-                        <label
-                            for="password_confirmation"
-                            class="mb-2.5 block text-sm font-semibold text-gray-700"
-                        >
-                            Confirmar nova senha
-                        </label>
-
-                        <input
-                            type="password"
-                            id="password_confirmation"
-                            name="password_confirmation"
-                            minlength="8"
-                            placeholder="Digite a senha novamente"
-                            class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition focus:border-orange-500 focus:ring-4 focus:ring-orange-100"
-                        >
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            {{-- RODAPÉ --}}
-            <div class="flex flex-col-reverse gap-3 border-t border-gray-100 bg-gray-50 px-6 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-10">
-
-                <p class="hidden text-xs text-gray-400 sm:block">
-                    <span class="text-red-500">*</span>
-                    Campos obrigatórios
+                <p class="mt-2 text-sm font-medium text-red-500">
+                    {{ $message }}
                 </p>
 
-                <div class="flex w-full flex-col-reverse gap-3 sm:w-auto sm:flex-row">
+            @enderror
 
-                    <a
-                        href="{{ route('usuarios.index') }}"
-                        class="inline-flex min-h-11 items-center justify-center rounded-xl border border-gray-300 bg-white px-6 text-sm font-semibold text-gray-700 transition hover:bg-gray-100"
-                    >
-                        Cancelar
-                    </a>
+        </div>
 
 
-                    <button
-                        type="button"
-                        onclick="abrirModalEdicao()"
-                        class="inline-flex min-h-11 items-center justify-center rounded-xl bg-orange-500 px-7 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-600 focus:outline-none focus:ring-4 focus:ring-orange-200"
-                    >
+        {{-- ========================================= --}}
+        {{-- PERFIL --}}
+        {{-- ========================================= --}}
 
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="mr-2 h-5 w-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            stroke-width="2"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M5 13l4 4L19 7"
-                            />
-                        </svg>
+        <div class="md:col-span-2">
 
-                        Salvar alterações
+            <label
+                for="role"
+                class="mb-2 block text-sm font-semibold text-gray-700"
+            >
 
-                    </button>
+                Perfil de acesso
 
-                </div>
+                <span class="text-red-500">*</span>
 
-            </div>
+            </label>
 
-        </form>
+
+            <select
+                id="role"
+                name="role"
+                required
+                class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20"
+            >
+
+                <option
+                    value="setor"
+                    {{ old('role', $usuario->role) === 'setor' ? 'selected' : '' }}
+                >
+                    Usuário
+                </option>
+
+                <option
+                    value="lider"
+                    {{ old('role', $usuario->role) === 'lider' ? 'selected' : '' }}
+                >
+                    Líder
+                </option>
+
+            </select>
+
+
+            <p class="mt-2 text-xs text-gray-400">
+                O líder possui permissões adicionais dentro do setor.
+            </p>
+
+
+            @error('role')
+
+                <p class="mt-2 text-sm font-medium text-red-500">
+                    {{ $message }}
+                </p>
+
+            @enderror
+
+        </div>
+
+
+        {{-- ========================================= --}}
+        {{-- NOVA SENHA --}}
+        {{-- ========================================= --}}
+
+        <div>
+
+            <label
+                for="password"
+                class="mb-2 block text-sm font-semibold text-gray-700"
+            >
+
+                Nova senha
+
+                <span class="font-normal text-gray-400">
+                    (opcional)
+                </span>
+
+            </label>
+
+
+            <input
+                type="password"
+                id="password"
+                name="password"
+                minlength="8"
+                placeholder="Digite uma nova senha"
+                class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20"
+            >
+
+
+            <p class="mt-2 text-xs text-gray-400">
+                Deixe em branco para manter a senha atual.
+            </p>
+
+
+            @error('password')
+
+                <p class="mt-2 text-sm font-medium text-red-500">
+                    {{ $message }}
+                </p>
+
+            @enderror
+
+        </div>
+
+
+        {{-- ========================================= --}}
+        {{-- CONFIRMAR SENHA --}}
+        {{-- ========================================= --}}
+
+        <div>
+
+            <label
+                for="password_confirmation"
+                class="mb-2 block text-sm font-semibold text-gray-700"
+            >
+
+                Confirmar nova senha
+
+            </label>
+
+
+            <input
+                type="password"
+                id="password_confirmation"
+                name="password_confirmation"
+                minlength="8"
+                placeholder="Digite a senha novamente"
+                class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20"
+            >
+
+        </div>
 
     </div>
+
+</div>
+
+
+{{-- ========================================= --}}
+{{-- AÇÕES --}}
+{{-- ========================================= --}}
+
+<div class="flex flex-col-reverse gap-3 border-t border-gray-200 bg-gray-50 px-5 py-5 sm:flex-row sm:justify-end sm:px-6">
+
+    <a
+        href="{{ route('usuarios.index') }}"
+        class="inline-flex min-h-11 items-center justify-center rounded-xl border border-gray-300 bg-white px-6 text-sm font-semibold text-gray-700 shadow-sm transition hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-100"
+    >
+
+        Cancelar
+
+    </a>
+
+
+    <button
+        type="button"
+        onclick="abrirModalEdicao()"
+        class="inline-flex min-h-11 items-center justify-center rounded-xl bg-orange-500 px-7 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-600 focus:outline-none focus:ring-4 focus:ring-orange-200"
+    >
+
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="mr-2 h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+        >
+
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M5 13l4 4L19 7"
+            />
+
+        </svg>
+
+        Salvar alterações
+
+    </button>
+
+</div>
+
+
+</form>
 
 </div>
 
@@ -372,97 +439,110 @@
 >
 
 {{-- OVERLAY --}}
+
 <div
     class="absolute inset-0 bg-black/50 backdrop-blur-sm"
     onclick="fecharModalEdicao()"
 ></div>
 
 {{-- MODAL --}}
+
 <div
     class="relative w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl"
 >
 
-    {{-- ÍCONE --}}
-    <div class="flex justify-center px-6 pt-7">
 
-        <div class="flex h-14 w-14 items-center justify-center rounded-full bg-orange-100 text-orange-500">
+{{-- ÍCONE --}}
 
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-7 w-7"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-            >
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M12 9v3.75m0 3.75h.008M10.29 3.86l-7.36 12.73A2 2 0 004.66 19.6h14.68a2 2 0 001.73-3.01L13.71 3.86a2 2 0 00-3.42 0z"
-                />
-            </svg>
+<div class="flex justify-center px-6 pt-7">
 
-        </div>
+    <div class="flex h-14 w-14 items-center justify-center rounded-full bg-orange-100 text-orange-500">
 
-    </div>
-
-
-    {{-- CONTEÚDO --}}
-    <div class="px-6 pb-6 pt-5 text-center">
-
-        <h2 class="text-lg font-bold text-gray-900">
-            Salvar alterações
-        </h2>
-
-        <p class="mt-2 text-sm leading-6 text-gray-500">
-            Tem certeza que deseja salvar as alterações deste usuário?
-        </p>
-
-        <p class="mt-1 text-xs text-gray-400">
-            As informações atualizadas serão aplicadas imediatamente.
-        </p>
-
-    </div>
-
-
-    {{-- AÇÕES --}}
-    <div class="flex flex-col-reverse gap-3 border-t border-gray-100 bg-gray-50 px-6 py-4 sm:flex-row sm:justify-end">
-
-        <button
-            type="button"
-            onclick="fecharModalEdicao()"
-            class="inline-flex min-h-11 items-center justify-center rounded-xl border border-gray-300 bg-white px-5 text-sm font-semibold text-gray-700 transition hover:bg-gray-100"
-        >
-            Cancelar
-        </button>
-
-
-        <button
-            type="button"
-            onclick="confirmarEdicao()"
-            class="inline-flex min-h-11 items-center justify-center rounded-xl bg-orange-500 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-600 focus:outline-none focus:ring-4 focus:ring-orange-200"
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-7 w-7"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
         >
 
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="mr-2 h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-            >
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M5 13l4 4L19 7"
-                />
-            </svg>
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 9v3.75m0 3.75h.008M10.29 3.86l-7.36 12.73A2 2 0 004.66 19.6h14.68a2 2 0 001.73-3.01L13.71 3.86a2 2 0 00-3.42 0z"
+            />
 
-            Confirmar alterações
-
-        </button>
+        </svg>
 
     </div>
+
+</div>
+
+
+{{-- CONTEÚDO --}}
+
+<div class="px-6 pb-6 pt-5 text-center">
+
+    <h2 class="text-lg font-bold text-gray-900">
+        Salvar alterações
+    </h2>
+
+    <p class="mt-2 text-sm leading-6 text-gray-500">
+        Tem certeza que deseja salvar as alterações deste usuário?
+    </p>
+
+    <p class="mt-1 text-xs text-gray-400">
+        As informações atualizadas serão aplicadas imediatamente.
+    </p>
+
+</div>
+
+
+{{-- AÇÕES --}}
+
+<div class="flex flex-col-reverse gap-3 border-t border-gray-100 bg-gray-50 px-6 py-4 sm:flex-row sm:justify-end">
+
+    <button
+        type="button"
+        onclick="fecharModalEdicao()"
+        class="inline-flex min-h-11 items-center justify-center rounded-xl border border-gray-300 bg-white px-5 text-sm font-semibold text-gray-700 transition hover:bg-gray-100"
+    >
+
+        Cancelar
+
+    </button>
+
+
+    <button
+        type="button"
+        onclick="confirmarEdicao()"
+        class="inline-flex min-h-11 items-center justify-center rounded-xl bg-orange-500 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-600 focus:outline-none focus:ring-4 focus:ring-orange-200"
+    >
+
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="mr-2 h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+        >
+
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M5 13l4 4L19 7"
+            />
+
+        </svg>
+
+        Confirmar alterações
+
+    </button>
+
+</div>
+
 
 </div>
 

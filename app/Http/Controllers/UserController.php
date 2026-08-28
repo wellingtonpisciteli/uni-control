@@ -163,4 +163,13 @@ class UserController extends Controller
             ->route('usuarios.index')
             ->with('success', 'Usuário atualizado com sucesso.');
     }
+
+    public function destroy(User $usuario)
+    {
+        $usuario->delete();
+
+        return redirect()
+            ->route('usuarios.index')
+            ->with('success', 'Usuário excluído com sucesso.');
+    }
 }

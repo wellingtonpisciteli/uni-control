@@ -433,8 +433,9 @@
                             {{-- Ações --}}
                             <td class="px-6 py-4">
 
-                                <div class="flex justify-end">
+                                <div class="flex justify-end gap-2">
 
+                                    {{-- EDITAR --}}
                                     <a
                                         href="{{ route('usuarios.edit', $usuario) }}"
                                         class="inline-flex items-center gap-2 rounded-lg bg-gray-100 px-4 py-2 text-xs font-semibold text-gray-700 transition hover:bg-orange-50 hover:text-orange-600"
@@ -459,6 +460,44 @@
 
                                     </a>
 
+
+                                    {{-- EXCLUIR --}}
+                                    <form
+                                        id="form-exclusao-{{ $usuario->id }}"
+                                        action="{{ route('usuarios.destroy', $usuario) }}"
+                                        method="POST"
+                                    >
+
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button
+                                            type="button"
+                                            onclick="abrirModalExclusao('{{ $usuario->id }}', '{{ addslashes($usuario->name) }}')"
+                                            class="inline-flex items-center gap-2 rounded-lg bg-red-50 px-4 py-2 text-xs font-semibold text-red-600 transition hover:bg-red-100 hover:text-red-700 focus:outline-none focus:ring-4 focus:ring-red-100"
+                                        >
+
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                class="h-4 w-4"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    d="M6 7h12M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2m2 0v12a2 2 0 01-2 2H9a2 2 0 01-2-2V7m3 4v6m4-6v6"
+                                                />
+                                            </svg>
+
+                                            Excluir
+
+                                        </button>
+
+                                    </form>
+
                                 </div>
 
                             </td>
@@ -478,5 +517,187 @@
 </div>
 
 </div>
+
+{{-- ========================================= --}}
+{{-- MODAL DE CONFIRMAÇÃO DE EXCLUSÃO --}}
+{{-- ========================================= --}}
+
+<div
+    id="modal-exclusao"
+    class="fixed inset-0 z-50 hidden items-center justify-center px-4"
+    aria-hidden="true"
+>
+
+    {{-- OVERLAY --}}
+    <div
+        class="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        onclick="fecharModalExclusao()"
+    ></div>
+
+
+    {{-- MODAL --}}
+    <div
+        class="relative w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl"
+    >
+
+        {{-- ÍCONE --}}
+        <div class="flex justify-center px-6 pt-7">
+
+            <div class="flex h-14 w-14 items-center justify-center rounded-full bg-red-100 text-red-500">
+
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-7 w-7"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 9v3.75m0 3.75h.008M10.29 3.86l-7.36 12.73A2 2 0 004.66 19.6h14.68a2 2 0 001.73-3.01L13.71 3.86a2 2 0 00-3.42 0z"
+                    />
+
+                </svg>
+
+            </div>
+
+        </div>
+
+
+        {{-- CONTEÚDO --}}
+        <div class="px-6 pb-6 pt-5 text-center">
+
+            <h2 class="text-lg font-bold text-gray-900">
+                Excluir usuário
+            </h2>
+
+            <p class="mt-2 text-sm leading-6 text-gray-500">
+                Tem certeza que deseja excluir este usuário?
+            </p>
+
+            <p
+                id="nome-usuario-exclusao"
+                class="mt-2 font-semibold text-gray-900"
+            >
+            </p>
+
+            <p class="mt-2 text-xs text-gray-400">
+                Esta ação não poderá ser desfeita.
+            </p>
+
+        </div>
+
+
+        {{-- AÇÕES --}}
+        <div class="flex flex-col-reverse gap-3 border-t border-gray-100 bg-gray-50 px-6 py-4 sm:flex-row sm:justify-end">
+
+            <button
+                type="button"
+                onclick="fecharModalExclusao()"
+                class="inline-flex min-h-11 items-center justify-center rounded-xl border border-gray-300 bg-white px-5 text-sm font-semibold text-gray-700 transition hover:bg-gray-100"
+            >
+                Cancelar
+            </button>
+
+
+            <button
+                type="button"
+                onclick="confirmarExclusao()"
+                class="inline-flex min-h-11 items-center justify-center rounded-xl bg-red-500 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-200"
+            >
+
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="mr-2 h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M6 7h12M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2m2 0v12a2 2 0 01-2 2H9a2 2 0 01-2-2V7m3 4v6m4-6v6"
+                    />
+                </svg>
+
+                Excluir usuário
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{{-- ========================================= --}}
+{{-- JAVASCRIPT --}}
+{{-- ========================================= --}}
+
+<script>
+
+    let usuarioExclusaoId = null;
+
+
+    function abrirModalExclusao(id, nome)
+    {
+        usuarioExclusaoId = id;
+
+        const modal = document.getElementById('modal-exclusao');
+
+        const nomeUsuario = document.getElementById('nome-usuario-exclusao');
+
+        nomeUsuario.textContent = nome;
+
+        modal.classList.remove('hidden');
+
+        modal.classList.add('flex');
+
+        modal.setAttribute('aria-hidden', 'false');
+
+        document.body.classList.add('overflow-hidden');
+    }
+
+
+    function fecharModalExclusao()
+    {
+        const modal = document.getElementById('modal-exclusao');
+
+        modal.classList.add('hidden');
+
+        modal.classList.remove('flex');
+
+        modal.setAttribute('aria-hidden', 'true');
+
+        document.body.classList.remove('overflow-hidden');
+
+        usuarioExclusaoId = null;
+    }
+
+
+    function confirmarExclusao()
+    {
+        if (!usuarioExclusaoId) {
+            return;
+        }
+
+        document
+            .getElementById('form-exclusao-' + usuarioExclusaoId)
+            .submit();
+    }
+
+
+    document.addEventListener('keydown', function(event)
+    {
+        if (event.key === 'Escape') {
+            fecharModalExclusao();
+        }
+    });
+
+</script>
 
 @endsection

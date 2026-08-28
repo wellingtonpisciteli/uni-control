@@ -39,7 +39,7 @@ class MaterialController extends Controller
             'nome' => ['required', 'string', 'max:255'],
             'categoria' => ['nullable', 'string', 'max:255'],
             'unidade' => ['required', 'string', 'max:50'],
-            'estoque_minimo' => ['required', 'integer', 'min:0'],
+            'estoque_minimo' => ['required', 'integer', 'min:1'],
         ]);
 
         Material::create([
@@ -78,7 +78,7 @@ class MaterialController extends Controller
             'nome' => ['required', 'string', 'max:255'],
             'categoria' => ['nullable', 'string', 'max:255'],
             'unidade' => ['required', 'string', 'max:50'],
-            'estoque_minimo' => ['required', 'integer', 'min:0'],
+            'estoque_minimo' => ['required', 'integer', 'min:1'],
         ]);
 
         $material->update($validated);
@@ -91,7 +91,7 @@ class MaterialController extends Controller
     /**
      * Desativa um material.
      */
-    public function destroy(Material $material): RedirectResponse
+    public function desativar(Material $material): RedirectResponse
     {
         if ($material->setor_id !== Auth::user()->setor_id) {
             abort(403);
@@ -122,5 +122,17 @@ class MaterialController extends Controller
         return redirect()
             ->route('materiais.index')
             ->with('success', 'Material reativado com sucesso.');
+    }
+
+    /**
+     * Exclui um material.
+     */
+    public function destroy(Material $material)
+    {
+        $material->delete();
+
+        return redirect()
+            ->route('materiais.index')
+            ->with('success', 'Material excluído com sucesso.');
     }
 }

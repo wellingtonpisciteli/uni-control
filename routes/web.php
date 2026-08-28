@@ -70,6 +70,9 @@ Route::middleware(['auth', 'verified', 'role:administrador,lider'])->group(funct
     Route::put('/usuarios/{usuario}', [UserController::class, 'update'])
         ->name('usuarios.update');
 
+     Route::delete('/usuarios/{usuario}', [UserController::class, 'destroy'])
+        ->name('usuarios.destroy');
+
 });
 
 
@@ -140,11 +143,14 @@ Route::middleware(['auth', 'verified', 'role:setor,lider'])->group(function () {
     Route::put('/materiais/{material}', [MaterialController::class, 'update'])
         ->name('materiais.update');
 
-    Route::delete('/materiais/{material}', [MaterialController::class, 'destroy'])
-        ->name('materiais.destroy');
+    Route::delete('/materiais/{material}/desativar', [MaterialController::class, 'desativar'])
+        ->name('materiais.desativar');
 
     Route::post('/materiais/{material}/reativar', [MaterialController::class, 'reativar'])
         ->name('materiais.reativar');
+
+    Route::delete('/materiais/{material}', [MaterialController::class, 'destroy'])
+        ->name('materiais.destroy');
 
 });
 
