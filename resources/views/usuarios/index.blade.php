@@ -4,29 +4,42 @@
 
 <div class="px-4 py-6 sm:px-6 lg:px-8">
 
-{{-- Cabeçalho --}}
+{{-- ========================================= --}}
+{{-- CABEÇALHO --}}
+{{-- ========================================= --}}
+
 <div class="mb-6 flex flex-col gap-4 sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
 
     <div>
 
-        <p class="text-sm font-semibold text-orange-500">
-            {{ Auth::user()->setor->nome }}
-        </p>
+        @if(Auth::user()->setor)
+
+            <p class="text-sm font-semibold text-orange-500">
+                {{ Auth::user()->setor->nome }}
+            </p>
+
+        @else
+
+            <p class="text-sm font-semibold text-orange-500">
+                Administração
+            </p>
+
+        @endif
 
         <h1 class="mt-1 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-            Materiais
+            Usuários
         </h1>
 
         <p class="mt-2 text-sm text-gray-500 sm:text-base">
-            Cadastre e gerencie os materiais utilizados pelo seu setor.
+            Gerencie os usuários que possuem acesso ao UniControl.
         </p>
 
     </div>
 
 
-    {{-- Novo material --}}
+    {{-- Novo usuário --}}
     <a
-        href="{{ route('materiais.create') }}"
+        href="{{ route('usuarios.create') }}"
         class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-orange-500 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-600 focus:outline-none focus:ring-4 focus:ring-orange-200 sm:w-auto"
     >
 
@@ -45,15 +58,31 @@
             />
         </svg>
 
-        Novo material
+        Novo usuário
 
     </a>
 
 </div>
 
 
-{{-- Indicadores --}}
-<div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+{{-- ========================================= --}}
+{{-- MENSAGEM DE SUCESSO --}}
+{{-- ========================================= --}}
+
+@if(session('success'))
+
+    <div class="mb-6 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-700">
+        {{ session('success') }}
+    </div>
+
+@endif
+
+
+{{-- ========================================= --}}
+{{-- INDICADORES --}}
+{{-- ========================================= --}}
+
+<div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
 
     {{-- Total --}}
     <div class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
@@ -73,7 +102,7 @@
                     <path
                         stroke-linecap="round"
                         stroke-linejoin="round"
-                        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                        d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2m6-10a4 4 0 100-8 4 4 0 000 8zm10 10v-2a4 4 0 00-3-3.87m-1-9.13a4 4 0 110 8"
                     />
                 </svg>
 
@@ -82,11 +111,11 @@
             <div>
 
                 <p class="text-sm font-medium text-gray-500">
-                    Materiais cadastrados
+                    Total de usuários
                 </p>
 
                 <p class="mt-1 text-2xl font-bold text-gray-900">
-                    {{ $materiais->count() }}
+                    {{ $usuarios->count() }}
                 </p>
 
             </div>
@@ -96,7 +125,48 @@
     </div>
 
 
-    {{-- Categorias --}}
+    {{-- Líderes --}}
+    <div class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+
+        <div class="flex items-center gap-4">
+
+            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-orange-500">
+
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 3l2.09 4.26L19 8l-3.5 3.41L16.18 16 12 13.77 7.82 16l.68-4.59L5 8l4.91-.74L12 3z"
+                    />
+                </svg>
+
+            </div>
+
+            <div>
+
+                <p class="text-sm font-medium text-gray-500">
+                    Líderes
+                </p>
+
+                <p class="mt-1 text-2xl font-bold text-gray-900">
+                    {{ $usuarios->where('role', 'lider')->count() }}
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    {{-- Usuários do setor --}}
     <div class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
 
         <div class="flex items-center gap-4">
@@ -114,7 +184,7 @@
                     <path
                         stroke-linecap="round"
                         stroke-linejoin="round"
-                        d="M7 7h.01M7 3h5.586a2 2 0 011.414.586l6.414 6.414a2 2 0 010 2.828l-5.586 5.586a2 2 0 01-2.828 0L5.586 12A2 2 0 015 10.586V5a2 2 0 012-2z"
+                        d="M17 20h5v-2a4 4 0 00-5-3.87M9 20H4v-2a4 4 0 015-3.87M12 12a4 4 0 100-8 4 4 0 000 8zm5 0a4 4 0 100-8 4 4 0 000 8z"
                     />
                 </svg>
 
@@ -123,11 +193,11 @@
             <div>
 
                 <p class="text-sm font-medium text-gray-500">
-                    Categorias
+                    Usuários do setor
                 </p>
 
                 <p class="mt-1 text-2xl font-bold text-gray-900">
-                    {{ $materiais->pluck('categoria')->filter()->unique()->count() }}
+                    {{ $usuarios->where('role', 'setor')->count() }}
                 </p>
 
             </div>
@@ -139,7 +209,10 @@
 </div>
 
 
-{{-- Lista de materiais --}}
+{{-- ========================================= --}}
+{{-- LISTA DE USUÁRIOS --}}
+{{-- ========================================= --}}
+
 <div class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
 
     {{-- Cabeçalho da lista --}}
@@ -160,7 +233,7 @@
                     <path
                         stroke-linecap="round"
                         stroke-linejoin="round"
-                        d="M4 7h16M4 12h16M4 17h16"
+                        d="M17 20h5v-2a4 4 0 00-5-3.87M9 20H4v-2a4 4 0 015-3.87M12 12a4 4 0 100-8 4 4 0 000 8zm5 0a4 4 0 100-8 4 4 0 000 8z"
                     />
                 </svg>
 
@@ -169,11 +242,11 @@
             <div>
 
                 <h2 class="text-base font-semibold text-gray-900 sm:text-lg">
-                    Materiais cadastrados
+                    Usuários cadastrados
                 </h2>
 
                 <p class="mt-1 text-sm text-gray-500">
-                    Visualize e gerencie os materiais do seu setor.
+                    Usuários que possuem acesso ao seu setor.
                 </p>
 
             </div>
@@ -183,9 +256,12 @@
     </div>
 
 
-    @if($materiais->isEmpty())
+    @if($usuarios->isEmpty())
 
-        {{-- Estado vazio --}}
+        {{-- ========================================= --}}
+        {{-- ESTADO VAZIO --}}
+        {{-- ========================================= --}}
+
         <div class="flex flex-col items-center justify-center px-6 py-16 text-center">
 
             <div class="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-orange-100 text-orange-500">
@@ -201,23 +277,23 @@
                     <path
                         stroke-linecap="round"
                         stroke-linejoin="round"
-                        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                        d="M17 20h5v-2a4 4 0 00-5-3.87M9 20H4v-2a4 4 0 015-3.87M12 12a4 4 0 100-8 4 4 0 000 8zm5 0a4 4 0 100-8 4 4 0 000 8z"
                     />
                 </svg>
 
             </div>
 
             <h2 class="text-lg font-semibold text-gray-900">
-                Nenhum material cadastrado
+                Nenhum usuário encontrado
             </h2>
 
             <p class="mt-2 max-w-md text-sm leading-6 text-gray-500">
-                Seu setor ainda não possui materiais cadastrados.
-                Cadastre o primeiro material para começar.
+                Ainda não existem usuários cadastrados para este setor.
+                Cadastre um usuário para começar.
             </p>
 
             <a
-                href="{{ route('materiais.create') }}"
+                href="{{ route('usuarios.create') }}"
                 class="mt-6 inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-orange-500 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-600 focus:outline-none focus:ring-4 focus:ring-orange-200"
             >
 
@@ -236,7 +312,7 @@
                     />
                 </svg>
 
-                Cadastrar material
+                Cadastrar usuário
 
             </a>
 
@@ -244,37 +320,37 @@
 
     @else
 
-        {{-- Tabela --}}
+        {{-- ========================================= --}}
+        {{-- TABELA --}}
+        {{-- ========================================= --}}
+
         <div class="overflow-x-auto">
 
-            <table class="w-full min-w-[700px] text-left text-sm">
+            <table class="w-full min-w-[750px] text-left text-sm">
 
                 <thead class="border-b border-gray-200 bg-gray-50">
 
                     <tr>
                         <th class="px-6 py-4 text-xs font-bold uppercase tracking-wide text-gray-600">
-                            Material
+                            Usuário
                         </th>
 
                         <th class="px-6 py-4 text-xs font-bold uppercase tracking-wide text-gray-600">
-                            Categoria
+                            E-mail
                         </th>
 
                         <th class="px-6 py-4 text-xs font-bold uppercase tracking-wide text-gray-600">
-                            Unidade
+                            Setor
                         </th>
 
                         <th class="px-6 py-4 text-xs font-bold uppercase tracking-wide text-gray-600">
-                            Estoque mínimo
-                        </th>
-
-                        <th class="px-6 py-4 text-xs font-bold uppercase tracking-wide text-gray-600">
-                            Status
+                            Perfil
                         </th>
 
                         <th class="px-6 py-4 text-right text-xs font-bold uppercase tracking-wide text-gray-600">
                             Ações
                         </th>
+
                     </tr>
 
                 </thead>
@@ -282,82 +358,71 @@
 
                 <tbody class="divide-y divide-gray-100">
 
-                    @foreach($materiais as $material)
+                    @foreach($usuarios as $usuario)
 
                         <tr class="transition hover:bg-gray-50">
 
-                            {{-- Material --}}
+                            {{-- Usuário --}}
                             <td class="px-6 py-4">
 
                                 <div class="flex items-center gap-3">
 
-                                    <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-orange-50 text-orange-500">
+                                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-orange-100 font-semibold text-orange-600">
 
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            class="h-4 w-4"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                            stroke-width="2"
-                                        >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-                                            />
-                                        </svg>
+                                        {{ strtoupper(substr($usuario->name, 0, 1)) }}
 
                                     </div>
 
-                                    <p class="font-semibold text-gray-900">
-                                        {{ $material->nome }}
-                                    </p>
+                                    <div class="min-w-0">
+
+                                        <p class="truncate font-semibold text-gray-900">
+                                            {{ $usuario->name }}
+                                        </p>
+
+                                    </div>
 
                                 </div>
 
                             </td>
 
 
-                            {{-- Categoria --}}
+                            {{-- E-mail --}}
                             <td class="px-6 py-4 text-gray-600">
-                                {{ $material->categoria ?? '—' }}
+                                {{ $usuario->email }}
                             </td>
 
 
-                            {{-- Unidade --}}
-                            <td class="px-6 py-4">
-
-                                <span class="font-medium text-gray-700">
-                                    {{ $material->unidade }}
-                                </span>
-
+                            {{-- Setor --}}
+                            <td class="px-6 py-4 text-gray-600">
+                                {{ $usuario->setor->nome ?? 'Sem setor' }}
                             </td>
 
 
-                            {{-- Estoque mínimo --}}
+                            {{-- Perfil --}}
                             <td class="px-6 py-4">
 
-                                <span class="font-medium text-gray-700">
-                                    {{ $material->estoque_minimo }}
-                                </span>
+                                @if($usuario->role === 'lider')
 
-                            </td>
+                                    <span class="inline-flex items-center rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-700">
+                                        Líder
+                                    </span>
 
+                                @elseif($usuario->role === 'setor')
 
-                            {{-- Status --}}
-                            <td class="px-6 py-4">
+                                    <span class="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-700">
+                                        Usuário
+                                    </span>
 
-                                @if($material->ativo ?? true)
+                                @elseif($usuario->role === 'administrador')
 
-                                    <span class="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
-                                        Ativo
+                                    <span class="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-xs font-semibold text-purple-700">
+                                        Administrador
                                     </span>
 
                                 @else
 
-                                    <span class="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-600">
-                                        Inativo
+                                    <span class="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-700">
+                                        {{ ucfirst($usuario->role) }}
                                     </span>
 
                                 @endif
@@ -371,7 +436,7 @@
                                 <div class="flex justify-end">
 
                                     <a
-                                        href="{{ route('materiais.edit', $material) }}"
+                                        href="{{ route('usuarios.edit', $usuario) }}"
                                         class="inline-flex items-center gap-2 rounded-lg bg-gray-100 px-4 py-2 text-xs font-semibold text-gray-700 transition hover:bg-orange-50 hover:text-orange-600"
                                     >
 

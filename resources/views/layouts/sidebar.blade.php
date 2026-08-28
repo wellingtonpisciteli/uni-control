@@ -65,7 +65,7 @@
         {{-- SETORES --}}
         {{-- ================================= --}}
 
-        @if(Auth::user()->role === 'setor')
+        @if(in_array(Auth::user()->role, ['setor', 'lider']))
 
             <div class="mb-2 mt-6 px-4 text-xs font-semibold uppercase tracking-wider text-gray-500">
                 Meu Setor
@@ -75,7 +75,7 @@
             {{-- Estoque --}}
             <a href="{{ route('estoque.index') }}"
                class="mb-1 flex items-center rounded-lg px-4 py-3 text-sm font-medium
-                    {{ request()->routeIs('materiais.*')
+                    {{ request()->routeIs('estoque.*')
                         ? 'bg-orange-500 text-white'
                         : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
 
@@ -88,7 +88,10 @@
 
             {{-- Materiais --}}
             <a href="{{ route('materiais.index') }}"
-               class="mb-1 flex items-center rounded-lg px-4 py-3 text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white">
+               class="mb-1 flex items-center rounded-lg px-4 py-3 text-sm font-medium
+                    {{ request()->routeIs('materiais.*')
+                        ? 'bg-orange-500 text-white'
+                        : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
 
                 <span class="mr-3">🗃️</span>
 
@@ -119,15 +122,22 @@
             </a>
 
 
-            {{-- Usuários --}}
-            <a href="#"
-               class="mb-1 flex items-center rounded-lg px-4 py-3 text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white">
+            {{-- Usuários - somente líder --}}
+            @if(Auth::user()->role === 'lider')
 
-                <span class="mr-3">👥</span>
+                <a href="{{ route('usuarios.index') }}"
+                   class="mb-1 flex items-center rounded-lg px-4 py-3 text-sm font-medium
+                        {{ request()->routeIs('usuarios.*')
+                            ? 'bg-orange-500 text-white'
+                            : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
 
-                Usuários
+                    <span class="mr-3">👥</span>
 
-            </a>
+                    Usuários
+
+                </a>
+
+            @endif
 
 
         {{-- ================================= --}}

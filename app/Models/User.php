@@ -12,7 +12,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Setor;
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['name', 'email', 'password', 'setor_id', 'role'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {

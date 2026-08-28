@@ -57,15 +57,54 @@
         <div class="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-200">
 
             {{-- Cabeçalho --}}
-            <div class="border-b border-gray-200 px-5 py-4 sm:px-6">
+            <div class="border-b border-gray-200 px-6 py-6 sm:px-8">
 
-                <h2 class="text-base font-semibold text-gray-900 sm:text-lg">
-                    Materiais
-                </h2>
+                <div class="flex items-center gap-4">
 
-                <p class="mt-1 text-sm text-gray-500">
-                    Informe a quantidade apenas dos materiais que deseja retirar.
-                </p>
+                    {{-- ÍCONE --}}
+                    <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-orange-500">
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-6 w-6"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+
+                            {{-- Caixa --}}
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                            />
+
+                            {{-- Seta para baixo --}}
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M12 8v6m0 0l-2-2m2 2l2-2"
+                            />
+
+                        </svg>
+
+                    </div>
+
+                    {{-- TEXTO --}}
+                    <div>
+
+                        <h2 class="text-lg font-semibold text-gray-900">
+                            Materiais
+                        </h2>
+
+                        <p class="mt-1 text-sm text-gray-500">
+                            Informe a quantidade apenas dos materiais que deseja retirar.
+                        </p>
+
+                    </div>
+
+                </div>
 
             </div>
 

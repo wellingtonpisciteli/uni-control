@@ -2,131 +2,241 @@
 
 @section('content')
 
-<div class="px-4 py-6 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-gray-100 px-4 py-6 sm:px-6 lg:px-8">
 
-    {{-- Cabeçalho --}}
+    {{-- ========================================= --}}
+    {{-- CABEÇALHO --}}
+    {{-- ========================================= --}}
+
     <div class="mb-6 flex flex-col gap-4 sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
 
         <div>
 
-            <p class="text-sm font-medium text-orange-500">
+            <p class="text-sm font-semibold text-orange-500">
                 {{ Auth::user()->setor->nome }}
             </p>
 
-            <h1 class="mt-1 text-2xl font-bold text-gray-900 sm:text-3xl">
+            <h1 class="mt-1 text-2xl font-bold tracking-tight text-gray-950 sm:text-3xl">
                 Estoque
             </h1>
 
-            <p class="mt-2 text-sm text-gray-500 sm:text-base">
+            <p class="mt-2 text-sm text-gray-600 sm:text-base">
                 Controle as entradas, saídas e quantidades dos materiais.
             </p>
 
         </div>
 
 
-        {{-- Ações --}}
+        {{-- AÇÕES --}}
         <div class="flex w-full gap-2 sm:w-auto">
 
-           <a href="{{ route('estoque.entrada.form') }}"
-            class="flex flex-1 items-center justify-center rounded-lg bg-orange-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-orange-600 sm:flex-none">
-
+            <a
+                href="{{ route('estoque.entrada.form') }}"
+                class="flex flex-1 items-center justify-center rounded-xl bg-orange-500 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-600 focus:outline-none focus:ring-4 focus:ring-orange-200 sm:flex-none"
+            >
                 + Entrada
-
             </a>
 
-            <a href="{{ route('estoque.saida.form') }}"
-            class="flex flex-1 items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-semibold text-gray-700 transition hover:bg-gray-50 sm:flex-none">
-
+            <a
+                href="{{ route('estoque.saida.form') }}"
+                class="flex flex-1 items-center justify-center rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50 sm:flex-none"
+            >
                 − Saída
-
             </a>
 
         </div>
 
     </div>
 
+
+    {{-- ========================================= --}}
+    {{-- MENSAGEM DE SUCESSO --}}
+    {{-- ========================================= --}}
+
     @if(session('success'))
 
-        <div class="mb-6 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-700">
+        <div class="mb-6 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-700 shadow-sm">
             {{ session('success') }}
         </div>
 
     @endif
 
 
-    {{-- Indicadores --}}
+    {{-- ========================================= --}}
+    {{-- INDICADORES --}}
+    {{-- ========================================= --}}
+
     <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
 
         {{-- Total de materiais --}}
-        <div class="rounded-xl bg-white p-5 shadow-sm ring-1 ring-gray-200">
+        <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
 
-            <p class="text-sm text-gray-500">
-                Materiais em estoque
-            </p>
+            <div class="flex items-center justify-between">
 
-            <p class="mt-2 text-2xl font-bold text-gray-900">
-                {{ $materiais->count() }}
-            </p>
+                <div>
+
+                    <p class="text-sm font-medium text-gray-600">
+                        Materiais em estoque
+                    </p>
+
+                    <p class="mt-2 text-2xl font-bold text-gray-950">
+                        {{ $materiais->count() }}
+                    </p>
+
+                </div>
+
+                <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-100 text-gray-600">
+
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                        />
+                    </svg>
+
+                </div>
+
+            </div>
 
         </div>
 
 
         {{-- Estoque baixo --}}
-        <div class="rounded-xl bg-white p-5 shadow-sm ring-1 ring-gray-200">
+        <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
 
-            <p class="text-sm text-gray-500">
-                Estoque baixo
-            </p>
+            <div class="flex items-center justify-between">
 
-            <p class="mt-2 text-2xl font-bold text-orange-500">
-                {{ $estoqueBaixo }}
-            </p>
+                <div>
+
+                    <p class="text-sm font-medium text-gray-600">
+                        Estoque baixo
+                    </p>
+
+                    <p class="mt-2 text-2xl font-bold text-orange-500">
+                        {{ $estoqueBaixo }}
+                    </p>
+
+                </div>
+
+                <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-orange-100 text-orange-500">
+
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 9v4m0 4h.01M10.29 3.86l-7.36 12.73A2 2 0 004.66 19.6h14.68a2 2 0 001.73-3.01L13.71 3.86a2 2 0 00-3.42 0z"
+                        />
+                    </svg>
+
+                </div>
+
+            </div>
 
         </div>
 
 
         {{-- Sem estoque --}}
-        <div class="rounded-xl bg-white p-5 shadow-sm ring-1 ring-gray-200">
+        <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
 
-            <p class="text-sm text-gray-500">
-                Sem estoque
-            </p>
+            <div class="flex items-center justify-between">
 
-            <p class="mt-2 text-2xl font-bold text-red-500">
-                {{ $semEstoque }}
-            </p>
+                <div>
+
+                    <p class="text-sm font-medium text-gray-600">
+                        Sem estoque
+                    </p>
+
+                    <p class="mt-2 text-2xl font-bold text-red-500">
+                        {{ $semEstoque }}
+                    </p>
+
+                </div>
+
+                <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-red-100 text-red-500">
+
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M6 18L18 6M6 6l12 12"
+                        />
+                    </svg>
+
+                </div>
+
+            </div>
 
         </div>
 
     </div>
 
 
-    {{-- Estoque --}}
-    <div class="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-200">
+    {{-- ========================================= --}}
+    {{-- ESTOQUE --}}
+    {{-- ========================================= --}}
+
+    <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
 
         @if($materiais->isEmpty())
 
             {{-- Estado vazio --}}
             <div class="flex flex-col items-center justify-center px-6 py-16 text-center">
 
-                <div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-orange-100 text-3xl">
-                    📦
+                <div class="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-orange-100 text-orange-500">
+
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-8 w-8"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                        />
+                    </svg>
+
                 </div>
 
-                <h2 class="text-lg font-semibold text-gray-900">
+                <h2 class="text-lg font-semibold text-gray-950">
                     Estoque vazio
                 </h2>
 
-                <p class="mt-2 max-w-md text-sm text-gray-500">
+                <p class="mt-2 max-w-md text-sm leading-6 text-gray-600">
                     Nenhum material foi cadastrado para este setor.
                     Cadastre os materiais primeiro para começar a controlar o estoque.
                 </p>
 
-                <a href="{{ route('materiais.create') }}"
-                   class="mt-6 rounded-lg bg-orange-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-orange-600">
-
+                <a
+                    href="{{ route('materiais.create') }}"
+                    class="mt-6 inline-flex items-center rounded-xl bg-orange-500 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-600 focus:outline-none focus:ring-4 focus:ring-orange-200"
+                >
                     Cadastrar material
-
                 </a>
 
             </div>
@@ -138,31 +248,31 @@
 
                 <table class="w-full min-w-[700px] text-left text-sm">
 
-                    <thead class="border-b border-gray-200 bg-gray-50">
+                    <thead class="border-b border-gray-200 bg-gray-100">
 
                         <tr>
 
-                            <th class="px-6 py-4 font-semibold text-gray-600">
+                            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wide text-gray-600">
                                 Material
                             </th>
 
-                            <th class="px-6 py-4 font-semibold text-gray-600">
+                            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wide text-gray-600">
                                 Categoria
                             </th>
 
-                            <th class="px-6 py-4 font-semibold text-gray-600">
+                            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wide text-gray-600">
                                 Quantidade
                             </th>
 
-                            <th class="px-6 py-4 font-semibold text-gray-600">
+                            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wide text-gray-600">
                                 Mínimo
                             </th>
 
-                            <th class="px-6 py-4 font-semibold text-gray-600">
+                            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wide text-gray-600">
                                 Status
                             </th>
 
-                            <th class="px-6 py-4 text-right font-semibold text-gray-600">
+                            <th class="px-6 py-4 text-right text-xs font-bold uppercase tracking-wide text-gray-600">
                                 Ações
                             </th>
 
@@ -171,26 +281,28 @@
                     </thead>
 
 
-                    <tbody class="divide-y divide-gray-100">
+                    <tbody class="divide-y divide-gray-200">
 
                         @foreach($materiais as $material)
 
                             <tr class="transition hover:bg-gray-50">
 
+                                {{-- Material --}}
                                 <td class="px-6 py-4">
 
-                                    <p class="font-medium text-gray-900">
+                                    <p class="font-semibold text-gray-950">
                                         {{ $material->nome }}
                                     </p>
 
-                                    <p class="mt-1 text-xs text-gray-400">
+                                    <p class="mt-1 text-xs font-medium text-gray-500">
                                         {{ $material->unidade }}
                                     </p>
 
                                 </td>
 
 
-                                <td class="px-6 py-4 text-gray-500">
+                                {{-- Categoria --}}
+                                <td class="px-6 py-4 font-medium text-gray-600">
                                     {{ $material->categoria ?? '—' }}
                                 </td>
 
@@ -198,11 +310,11 @@
                                 {{-- Quantidade --}}
                                 <td class="px-6 py-4">
 
-                                    <span class="font-semibold text-gray-900">
+                                    <span class="font-bold text-gray-950">
                                         {{ $material->estoque_atual }}
                                     </span>
 
-                                    <span class="text-gray-400">
+                                    <span class="text-gray-500">
                                         {{ $material->unidade }}
                                     </span>
 
@@ -210,7 +322,7 @@
 
 
                                 {{-- Mínimo --}}
-                                <td class="px-6 py-4 text-gray-500">
+                                <td class="px-6 py-4 font-medium text-gray-600">
                                     {{ $material->estoque_minimo }}
                                 </td>
 
@@ -220,19 +332,19 @@
 
                                     @if($material->estoque_atual <= 0)
 
-                                        <span class="inline-flex rounded-full bg-red-100 px-3 py-1 text-xs font-medium text-red-700">
+                                        <span class="inline-flex rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700">
                                             Sem estoque
                                         </span>
 
                                     @elseif($material->estoque_atual <= $material->estoque_minimo)
 
-                                        <span class="inline-flex rounded-full bg-orange-100 px-3 py-1 text-xs font-medium text-orange-700">
+                                        <span class="inline-flex rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-700">
                                             Estoque baixo
                                         </span>
 
                                     @else
 
-                                        <span class="inline-flex rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
+                                        <span class="inline-flex rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
                                             Normal
                                         </span>
 
@@ -253,10 +365,9 @@
                                                 '{{ addslashes($material->nome) }}',
                                                 '{{ $material->unidade }}'
                                             )"
-                                            class="rounded-lg bg-orange-50 px-3 py-2 text-xs font-semibold text-orange-600 transition hover:bg-orange-100">
-
+                                            class="rounded-lg bg-orange-50 px-3 py-2 text-xs font-semibold text-orange-600 transition hover:bg-orange-100"
+                                        >
                                             Entrada
-
                                         </button>
 
                                         <button
@@ -267,10 +378,9 @@
                                                 '{{ $material->unidade }}',
                                                 {{ $material->estoque_atual }}
                                             )"
-                                            class="rounded-lg bg-gray-100 px-3 py-2 text-xs font-semibold text-gray-600 transition hover:bg-gray-200">
-
+                                            class="rounded-lg bg-gray-100 px-3 py-2 text-xs font-semibold text-gray-700 transition hover:bg-gray-200"
+                                        >
                                             Saída
-
                                         </button>
 
                                     </div>
@@ -291,24 +401,44 @@
 
     </div>
 
+
     {{-- ========================================= --}}
     {{-- MOVIMENTAÇÕES RECENTES --}}
     {{-- ========================================= --}}
 
-    <div class="mt-6 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-200">
+    <div class="mt-6 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
 
         {{-- Cabeçalho --}}
-        <div class="border-b border-gray-200 px-5 py-4 sm:px-6">
+        <div class="border-b border-gray-200 px-5 py-5 sm:px-6">
 
-            <div class="flex items-center justify-between">
+            <div class="flex items-center gap-4">
+
+                <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-orange-500">
+
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M4 7h16M4 12h16M4 17h16"
+                        />
+                    </svg>
+
+                </div>
 
                 <div>
 
-                    <h2 class="text-base font-semibold text-gray-900 sm:text-lg">
+                    <h2 class="text-base font-semibold text-gray-950 sm:text-lg">
                         Movimentações recentes
                     </h2>
 
-                    <p class="mt-1 text-sm text-gray-500">
+                    <p class="mt-1 text-sm text-gray-600">
                         Últimas movimentações realizadas no estoque.
                     </p>
 
@@ -324,27 +454,29 @@
             {{-- Sem movimentações --}}
             <div class="px-6 py-10 text-center">
 
-                <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 text-gray-400">
+                <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100 text-gray-500">
 
-                    <svg class="h-6 w-6"
+                    <svg
+                        class="h-6 w-6"
                         fill="none"
                         stroke="currentColor"
-                        viewBox="0 0 24 24">
-
-                        <path stroke-linecap="round"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
                             stroke-linejoin="round"
                             stroke-width="2"
-                            d="M4 7h16M4 12h16M4 17h16"/>
-
+                            d="M4 7h16M4 12h16M4 17h16"
+                        />
                     </svg>
 
                 </div>
 
-                <p class="mt-3 text-sm font-medium text-gray-700">
+                <p class="mt-3 text-sm font-semibold text-gray-800">
                     Nenhuma movimentação registrada.
                 </p>
 
-                <p class="mt-1 text-sm text-gray-500">
+                <p class="mt-1 text-sm text-gray-600">
                     As entradas e saídas realizadas aparecerão aqui.
                 </p>
 
@@ -357,27 +489,27 @@
 
                 <table class="w-full min-w-[700px] text-left text-sm">
 
-                    <thead class="border-b border-gray-200 bg-gray-50">
+                    <thead class="border-b border-gray-200 bg-gray-100">
 
                         <tr>
 
-                            <th class="px-6 py-4 font-semibold text-gray-600">
+                            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wide text-gray-600">
                                 Material
                             </th>
 
-                            <th class="px-6 py-4 font-semibold text-gray-600">
+                            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wide text-gray-600">
                                 Tipo
                             </th>
 
-                            <th class="px-6 py-4 font-semibold text-gray-600">
+                            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wide text-gray-600">
                                 Quantidade
                             </th>
 
-                            <th class="px-6 py-4 font-semibold text-gray-600">
+                            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wide text-gray-600">
                                 Responsável
                             </th>
 
-                            <th class="px-6 py-4 text-right font-semibold text-gray-600">
+                            <th class="px-6 py-4 text-right text-xs font-bold uppercase tracking-wide text-gray-600">
                                 Data
                             </th>
 
@@ -386,7 +518,7 @@
                     </thead>
 
 
-                    <tbody class="divide-y divide-gray-100">
+                    <tbody class="divide-y divide-gray-200">
 
                         @foreach($movimentacoes as $movimentacao)
 
@@ -395,17 +527,17 @@
                                 {{-- Material --}}
                                 <td class="px-6 py-4">
 
-                                    <p class="font-medium text-gray-900">
+                                    <p class="font-semibold text-gray-950">
                                         {{ $movimentacao->material->nome }}
                                     </p>
 
-                                    <p class="mt-1 text-xs text-gray-400">
+                                    <p class="mt-1 text-xs font-medium text-gray-500">
                                         {{ $movimentacao->material->unidade }}
                                     </p>
 
                                     @if($movimentacao->observacao)
 
-                                        <p class="mt-2 max-w-xs text-xs text-gray-500">
+                                        <p class="mt-2 max-w-xs text-xs text-gray-600">
                                             {{ $movimentacao->observacao }}
                                         </p>
 
@@ -419,13 +551,13 @@
 
                                     @if($movimentacao->tipo === 'entrada')
 
-                                        <span class="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
+                                        <span class="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
                                             Entrada
                                         </span>
 
                                     @else
 
-                                        <span class="inline-flex items-center rounded-full bg-red-100 px-3 py-1 text-xs font-medium text-red-700">
+                                        <span class="inline-flex items-center rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700">
                                             Saída
                                         </span>
 
@@ -439,19 +571,19 @@
 
                                     @if($movimentacao->tipo === 'entrada')
 
-                                        <span class="font-semibold text-green-600">
+                                        <span class="font-bold text-green-600">
                                             +{{ $movimentacao->quantidade }}
                                         </span>
 
                                     @else
 
-                                        <span class="font-semibold text-red-600">
+                                        <span class="font-bold text-red-600">
                                             -{{ $movimentacao->quantidade }}
                                         </span>
 
                                     @endif
 
-                                    <span class="text-gray-400">
+                                    <span class="text-gray-500">
                                         {{ $movimentacao->material->unidade }}
                                     </span>
 
@@ -459,7 +591,7 @@
 
 
                                 {{-- Responsável --}}
-                                <td class="px-6 py-4 text-gray-600">
+                                <td class="px-6 py-4 font-medium text-gray-700">
                                     {{ $movimentacao->user->name }}
                                 </td>
 
@@ -467,11 +599,11 @@
                                 {{-- Data --}}
                                 <td class="px-6 py-4 text-right">
 
-                                    <p class="text-gray-600">
+                                    <p class="font-medium text-gray-700">
                                         {{ $movimentacao->created_at->format('d/m/Y') }}
                                     </p>
 
-                                    <p class="mt-1 text-xs text-gray-400">
+                                    <p class="mt-1 text-xs text-gray-500">
                                         {{ $movimentacao->created_at->format('H:i') }}
                                     </p>
 
@@ -493,44 +625,54 @@
 
 </div>
 
+
 {{-- ========================================= --}}
 {{-- MODAL DE ENTRADA --}}
 {{-- ========================================= --}}
 
-<div id="modalEntrada"
-     class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 px-4">
+<div
+    id="modalEntrada"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 px-4"
+>
 
-    <div class="w-full max-w-md rounded-xl bg-white shadow-xl">
+    <div class="w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl">
 
         {{-- Cabeçalho --}}
         <div class="flex items-center justify-between border-b border-gray-200 px-6 py-4">
 
             <div>
-                <h2 class="text-lg font-semibold text-gray-900">
+
+                <h2 class="text-lg font-semibold text-gray-950">
                     Dar entrada no estoque
                 </h2>
 
-                <p id="modalMaterialNome"
-                   class="mt-1 text-sm text-gray-500">
+                <p
+                    id="modalMaterialNome"
+                    class="mt-1 text-sm text-gray-600"
+                >
                     Material
                 </p>
+
             </div>
 
             <button
                 type="button"
                 onclick="fecharModalEntrada()"
-                class="rounded-lg p-2 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600">
+                class="rounded-lg p-2 text-gray-400 transition hover:bg-gray-100 hover:text-gray-700"
+            >
 
-                <svg class="h-5 w-5"
-                     fill="none"
-                     stroke="currentColor"
-                     viewBox="0 0 24 24">
-
-                    <path stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M6 18L18 6M6 6l12 12"/>
-
+                <svg
+                    class="h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M6 18L18 6M6 6l12 12"
+                    />
                 </svg>
 
             </button>
@@ -542,14 +684,16 @@
         <div class="space-y-5 px-6 py-5">
 
             {{-- Unidade --}}
-            <div class="rounded-lg bg-gray-50 p-4">
+            <div class="rounded-xl bg-gray-100 p-4">
 
-                <p class="text-xs font-medium uppercase tracking-wide text-gray-400">
+                <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">
                     Unidade
                 </p>
 
-                <p id="modalMaterialUnidade"
-                   class="mt-1 font-medium text-gray-900">
+                <p
+                    id="modalMaterialUnidade"
+                    class="mt-1 font-semibold text-gray-950"
+                >
                     unidade
                 </p>
 
@@ -559,11 +703,11 @@
             {{-- Quantidade --}}
             <div>
 
-                <label for="quantidadeEntrada"
-                       class="mb-2 block text-sm font-medium text-gray-700">
-
+                <label
+                    for="quantidadeEntrada"
+                    class="mb-2 block text-sm font-semibold text-gray-700"
+                >
                     Quantidade da entrada
-
                 </label>
 
                 <input
@@ -572,31 +716,38 @@
                     min="1"
                     step="1"
                     placeholder="Digite a quantidade"
-                    class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20">
+                    class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-orange-500 focus:ring-4 focus:ring-orange-100"
+                >
+
+                <p
+                    id="erroQuantidadeEntrada"
+                    class="mt-2 hidden text-sm font-medium text-red-600"
+                >
+                    Informe uma quantidade válida.
+                </p>
 
             </div>
 
-            <p id="erroQuantidadeEntrada"
-            class="mt-2 hidden text-sm font-medium text-red-600">
-                Informe uma quantidade válida.
-            </p>
 
             {{-- Observação --}}
             <div>
 
-                <label for="observacaoEntrada"
-                    class="mb-2 block text-sm font-medium text-gray-700">
-
+                <label
+                    for="observacaoEntrada"
+                    class="mb-2 block text-sm font-semibold text-gray-700"
+                >
                     Observação
-                    <span class="font-normal text-gray-400">(opcional)</span>
-
+                    <span class="font-normal text-gray-400">
+                        (opcional)
+                    </span>
                 </label>
 
                 <textarea
                     id="observacaoEntrada"
                     rows="3"
                     placeholder="Ex: Compra realizada, reposição de estoque..."
-                    class="w-full resize-none rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20"></textarea>
+                    class="w-full resize-none rounded-xl border border-gray-300 px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-orange-500 focus:ring-4 focus:ring-orange-100"
+                ></textarea>
 
             </div>
 
@@ -604,24 +755,22 @@
 
 
         {{-- Rodapé --}}
-        <div class="flex flex-col-reverse gap-2 border-t border-gray-200 px-6 py-4 sm:flex-row sm:justify-end">
+        <div class="flex flex-col-reverse gap-2 border-t border-gray-200 bg-gray-50 px-6 py-4 sm:flex-row sm:justify-end">
 
             <button
                 type="button"
                 onclick="fecharModalEntrada()"
-                class="rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-50">
-
+                class="rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-100"
+            >
                 Cancelar
-
             </button>
 
             <button
                 type="button"
                 onclick="confirmarEntrada()"
-                class="rounded-lg bg-orange-500 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-600">
-
+                class="rounded-xl bg-orange-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-600"
+            >
                 Confirmar entrada
-
             </button>
 
         </div>
@@ -630,47 +779,54 @@
 
 </div>
 
+
 {{-- ========================================= --}}
 {{-- MODAL DE SAÍDA --}}
 {{-- ========================================= --}}
 
-<div id="modalSaida"
-     class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 px-4">
+<div
+    id="modalSaida"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 px-4"
+>
 
-    <div class="w-full max-w-md rounded-xl bg-white shadow-xl">
+    <div class="w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl">
 
         {{-- Cabeçalho --}}
         <div class="flex items-center justify-between border-b border-gray-200 px-6 py-4">
 
             <div>
 
-                <h2 class="text-lg font-semibold text-gray-900">
+                <h2 class="text-lg font-semibold text-gray-950">
                     Dar saída no estoque
                 </h2>
 
-                <p id="modalSaidaMaterialNome"
-                   class="mt-1 text-sm text-gray-500">
+                <p
+                    id="modalSaidaMaterialNome"
+                    class="mt-1 text-sm text-gray-600"
+                >
                     Material
                 </p>
 
             </div>
 
-
             <button
                 type="button"
                 onclick="fecharModalSaida()"
-                class="rounded-lg p-2 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600">
+                class="rounded-lg p-2 text-gray-400 transition hover:bg-gray-100 hover:text-gray-700"
+            >
 
-                <svg class="h-5 w-5"
-                     fill="none"
-                     stroke="currentColor"
-                     viewBox="0 0 24 24">
-
-                    <path stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M6 18L18 6M6 6l12 12"/>
-
+                <svg
+                    class="h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M6 18L18 6M6 6l12 12"
+                    />
                 </svg>
 
             </button>
@@ -682,20 +838,22 @@
         <div class="space-y-5 px-6 py-5">
 
             {{-- Estoque disponível --}}
-            <div class="rounded-lg bg-gray-50 p-4">
+            <div class="rounded-xl bg-gray-100 p-4">
 
-                <p class="text-xs font-medium uppercase tracking-wide text-gray-400">
+                <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">
                     Estoque disponível
                 </p>
 
-                <p class="mt-1 font-semibold text-gray-900">
+                <p class="mt-1 font-bold text-gray-950">
 
                     <span id="modalSaidaEstoque">
                         0
                     </span>
 
-                    <span id="modalSaidaUnidade"
-                          class="font-normal text-gray-500">
+                    <span
+                        id="modalSaidaUnidade"
+                        class="font-normal text-gray-500"
+                    >
                         unidade
                     </span>
 
@@ -707,11 +865,11 @@
             {{-- Quantidade --}}
             <div>
 
-                <label for="quantidadeSaida"
-                       class="mb-2 block text-sm font-medium text-gray-700">
-
+                <label
+                    for="quantidadeSaida"
+                    class="mb-2 block text-sm font-semibold text-gray-700"
+                >
                     Quantidade da saída
-
                 </label>
 
                 <input
@@ -720,11 +878,13 @@
                     min="1"
                     step="1"
                     placeholder="Digite a quantidade"
-                    class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20">
+                    class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-orange-500 focus:ring-4 focus:ring-orange-100"
+                >
 
-                <p id="erroQuantidadeSaida"
-                class="mt-2 hidden text-sm font-medium text-red-600">
-                </p>
+                <p
+                    id="erroQuantidadeSaida"
+                    class="mt-2 hidden text-sm font-medium text-red-600"
+                ></p>
 
             </div>
 
@@ -732,21 +892,22 @@
             {{-- Observação --}}
             <div>
 
-                <label for="observacaoSaida"
-                       class="mb-2 block text-sm font-medium text-gray-700">
-
+                <label
+                    for="observacaoSaida"
+                    class="mb-2 block text-sm font-semibold text-gray-700"
+                >
                     Observação
                     <span class="font-normal text-gray-400">
                         (opcional)
                     </span>
-
                 </label>
 
                 <textarea
                     id="observacaoSaida"
                     rows="3"
                     placeholder="Ex: Material entregue ao setor..."
-                    class="w-full resize-none rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20"></textarea>
+                    class="w-full resize-none rounded-xl border border-gray-300 px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-orange-500 focus:ring-4 focus:ring-orange-100"
+                ></textarea>
 
             </div>
 
@@ -754,24 +915,22 @@
 
 
         {{-- Rodapé --}}
-        <div class="flex flex-col-reverse gap-2 border-t border-gray-200 px-6 py-4 sm:flex-row sm:justify-end">
+        <div class="flex flex-col-reverse gap-2 border-t border-gray-200 bg-gray-50 px-6 py-4 sm:flex-row sm:justify-end">
 
             <button
                 type="button"
                 onclick="fecharModalSaida()"
-                class="rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-50">
-
+                class="rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-100"
+            >
                 Cancelar
-
             </button>
 
             <button
                 type="button"
                 onclick="confirmarSaida()"
-                class="rounded-lg bg-gray-800 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-gray-900">
-
+                class="rounded-xl bg-red-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-red-600"
+            >
                 Confirmar saída
-
             </button>
 
         </div>
@@ -779,6 +938,11 @@
     </div>
 
 </div>
+
+
+{{-- ========================================= --}}
+{{-- JAVASCRIPT --}}
+{{-- ========================================= --}}
 
 <script>
 
@@ -819,11 +983,14 @@
 
     function confirmarEntrada()
     {
-        const quantidadeInput = document.getElementById('quantidadeEntrada');
+        const quantidadeInput =
+            document.getElementById('quantidadeEntrada');
 
-        const quantidade = quantidadeInput.value;
+        const quantidade =
+            quantidadeInput.value;
 
-        const erro = document.getElementById('erroQuantidadeEntrada');
+        const erro =
+            document.getElementById('erroQuantidadeEntrada');
 
 
         if (!quantidade || Number(quantidade) <= 0) {
@@ -894,8 +1061,11 @@
         form.submit();
     }
 
+
     let materialSaidaId = null;
+
     let estoqueSaidaDisponivel = 0;
+
 
     function abrirModalSaida(id, nome, unidade, estoque)
     {
@@ -916,15 +1086,16 @@
         document.getElementById('observacaoSaida').value = '';
 
 
-        // Limpa erro anterior
-        const erro = document.getElementById('erroQuantidadeSaida');
+        const erro =
+            document.getElementById('erroQuantidadeSaida');
 
         erro.textContent = '';
 
         erro.classList.add('hidden');
 
 
-        const modal = document.getElementById('modalSaida');
+        const modal =
+            document.getElementById('modalSaida');
 
         modal.classList.remove('hidden');
 
@@ -937,15 +1108,18 @@
 
     function fecharModalSaida()
     {
-        const modal = document.getElementById('modalSaida');
+        const modal =
+            document.getElementById('modalSaida');
 
         modal.classList.add('hidden');
+
         modal.classList.remove('flex');
 
         materialSaidaId = null;
 
         estoqueSaidaDisponivel = 0;
     }
+
 
     function confirmarSaida()
     {
@@ -959,12 +1133,11 @@
             document.getElementById('erroQuantidadeSaida');
 
 
-        // Limpa erro anterior
         erro.classList.add('hidden');
+
         erro.textContent = '';
 
 
-        // Quantidade vazia ou inválida
         if (!quantidade || quantidade <= 0) {
 
             erro.textContent =
@@ -978,7 +1151,6 @@
         }
 
 
-        // Quantidade maior que o estoque
         if (quantidade > estoqueSaidaDisponivel) {
 
             erro.textContent =
@@ -992,28 +1164,32 @@
         }
 
 
-        // Tudo certo
-        const form = document.createElement('form');
+        const form =
+            document.createElement('form');
 
         form.method = 'POST';
 
-        form.action = `/estoque/${materialSaidaId}/saida`;
+        form.action =
+            `/estoque/${materialSaidaId}/saida`;
 
 
         // CSRF
-        const csrf = document.createElement('input');
+        const csrf =
+            document.createElement('input');
 
         csrf.type = 'hidden';
 
         csrf.name = '_token';
 
-        csrf.value = document
-            .querySelector('meta[name="csrf-token"]')
-            .getAttribute('content');
+        csrf.value =
+            document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute('content');
 
 
         // Quantidade
-        const quantidadeHidden = document.createElement('input');
+        const quantidadeHidden =
+            document.createElement('input');
 
         quantidadeHidden.type = 'hidden';
 
@@ -1023,14 +1199,17 @@
 
 
         // Observação
-        const observacaoHidden = document.createElement('input');
+        const observacaoHidden =
+            document.createElement('input');
 
         observacaoHidden.type = 'hidden';
 
         observacaoHidden.name = 'observacao';
 
         observacaoHidden.value =
-            document.getElementById('observacaoSaida').value;
+            document
+                .getElementById('observacaoSaida')
+                .value;
 
 
         form.appendChild(csrf);

@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\EstoqueController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +47,31 @@ Route::middleware('auth')->group(function () {
 
 });
 
+/*
+|--------------------------------------------------------------------------
+| Usuários
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth', 'verified', 'role:administrador,lider'])->group(function () {
+
+    Route::get('/usuarios', [UserController::class, 'index'])
+        ->name('usuarios.index');
+
+    Route::get('/usuarios/novo', [UserController::class, 'create'])
+        ->name('usuarios.create');
+
+    Route::post('/usuarios', [UserController::class, 'store'])
+        ->name('usuarios.store');
+
+    Route::get('/usuarios/{usuario}/editar', [UserController::class, 'edit'])
+        ->name('usuarios.edit');
+
+    Route::put('/usuarios/{usuario}', [UserController::class, 'update'])
+        ->name('usuarios.update');
+
+});
+
 
 /*
 |--------------------------------------------------------------------------
@@ -54,7 +79,7 @@ Route::middleware('auth')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'verified', 'role:setor'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:setor,lider'])->group(function () {
 
 
     /*
@@ -75,11 +100,11 @@ Route::middleware(['auth', 'verified', 'role:setor'])->group(function () {
     Route::post('/estoque/entrada', [EstoqueController::class, 'entradaLote'])
         ->name('estoque.entrada.lote');
 
-    // Saida em lote
+    // Saída em lote
     Route::get('/estoque/saida', [EstoqueController::class, 'saidaForm'])
-    ->name('estoque.saida.form');
+        ->name('estoque.saida.form');
 
-    // Processar saida em lote
+    // Processar saída em lote
     Route::post('/estoque/saida', [EstoqueController::class, 'saidaLote'])
         ->name('estoque.saida.lote');
 

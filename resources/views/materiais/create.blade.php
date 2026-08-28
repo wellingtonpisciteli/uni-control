@@ -31,6 +31,21 @@
                 Voltar para materiais
             </a>
 
+            @if(Auth::user()->setor)
+
+                <p class="mt-1 text-sm font-medium text-orange-500">
+                    {{ Auth::user()->setor->nome }}
+                </p>
+
+            @else
+
+                <p class="mt-1 text-sm font-medium text-orange-500">
+                    Administração
+                </p>
+
+            @endif
+
+
             <h1 class="text-3xl font-bold tracking-tight text-gray-900">
                 Cadastrar material
             </h1>
