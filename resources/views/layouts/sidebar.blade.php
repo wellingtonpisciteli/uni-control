@@ -101,7 +101,7 @@
 
 
             {{-- Solicitações --}}
-            <a href="#"
+            <a href="{{ route('solicitacoes.index') }}"
                class="mb-1 flex items-center rounded-lg px-4 py-3 text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white">
 
                 <span class="mr-3">📨</span>

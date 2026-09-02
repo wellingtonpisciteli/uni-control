@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Models\Setor;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable(['name', 'email', 'password', 'setor_id', 'role'])]
 #[Hidden(['password', 'remember_token'])]
@@ -35,5 +35,10 @@ class User extends Authenticatable
     public function setor(): BelongsTo
     {
         return $this->belongsTo(Setor::class);
+    }
+
+    public function solicitacoes(): HasMany
+    {
+        return $this->hasMany(Solicitacao::class, 'usuario_id');
     }
 }

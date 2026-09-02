@@ -5,6 +5,7 @@ use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\EstoqueController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SolicitacaoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -151,6 +152,25 @@ Route::middleware(['auth', 'verified', 'role:setor,lider'])->group(function () {
 
     Route::delete('/materiais/{material}', [MaterialController::class, 'destroy'])
         ->name('materiais.destroy');
+        
+
+        /*
+    |--------------------------------------------------------------------------
+    | Solicitações
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/solicitacoes', [SolicitacaoController::class, 'index'])
+        ->name('solicitacoes.index');
+
+    Route::get('/solicitacoes/create', [SolicitacaoController::class, 'create'])
+        ->name('solicitacoes.create');
+
+    Route::post('/solicitacoes', [SolicitacaoController::class, 'store'])
+        ->name('solicitacoes.store');
+
+    Route::get('/solicitacoes/{solicitacao}', [SolicitacaoController::class, 'show'])
+        ->name('solicitacoes.show');
 
 });
 

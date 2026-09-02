@@ -1,0 +1,22 @@
+[90m= [39m[34;4mIlluminate\Support\Collection[39;24m {#7521
+    [34mall[39m: [
+      {#7520
+        +"[1mid[22m": [35m1[39m,
+        +"[1munidade_id[22m": [35m0[39m,
+        +"[1mnome[22m": [32m"[39m[32mTecnologia da Informação[39m[32m"[39m,
+        +"[1mdescricao[22m": [32m"[39m[32mSetor responsável pela tecnologia da organização[39m[32m"[39m,
+        +"[1mativo[22m": [35m1[39m,
+        +"[1mcreated_at[22m": [32m"[39m[32m2026-08-23 13:30:39[39m[32m"[39m,
+        +"[1mupdated_at[22m": [32m"[39m[32m2026-08-23 13:30:39[39m[32m"[39m,
+      },
+      {#7518
+        +"[1mid[22m": [35m2[39m,
+        +"[1munidade_id[22m": [35m0[39m,
+        +"[1mnome[22m": [32m"[39m[32mCompras[39m[32m"[39m,
+        +"[1mdescricao[22m": [32m"[39m[32mSetor responsável pelas compras da organização[39m[32m"[39m,
+        +"[1mativo[22m": [35m1[39m,
+        +"[1mcreated_at[22m": [32m"[39m[32m2026-08-23 11:51:32[39m[32m"[39m,
+        +"[1mupdated_at[22m": [32m"[39m[32m2026-08-23 11:51:32[39m[32m"[39m,
+      },
+    ],
+  }
