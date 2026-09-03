@@ -8,74 +8,62 @@
     {{-- CABEÇALHO --}}
     {{-- ========================================= --}}
 
-    <div class="mb-6 sm:mb-8">
+    <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
-        <a
-            href="{{ route('solicitacoes.index') }}"
-            class="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-gray-500 transition hover:text-orange-500"
-        >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-            >
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M15 19l-7-7 7-7"
-                />
-            </svg>
+        <div>
+            <div class="flex flex-wrap items-center gap-2">
 
-            Voltar para solicitações
-        </a>
+                <p class="text-sm font-semibold text-orange-500">
+                    {{ $solicitacao->setor->nome }}
+                </p>
 
+                <span class="text-gray-300">
+                    •
+                </span>
 
-        <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-
-            <div class="min-w-0">
-
-                <div class="flex flex-wrap items-center gap-2">
-
-                    <p class="text-sm font-semibold text-orange-500">
-                        {{ $solicitacao->setor->nome }}
-                    </p>
-
-                    <span class="text-gray-300">
-                        •
-                    </span>
-
-                    <p class="text-sm text-gray-500">
-                        Solicitação
-                    </p>
-
-                </div>
-
-
-                <h1 class="mt-1 text-2xl font-bold tracking-tight text-gray-950 sm:text-3xl">
-                    #{{ str_pad($solicitacao->id, 4, '0', STR_PAD_LEFT) }}
-                </h1>
-
-                <p class="mt-2 text-sm text-gray-500">
-                    Detalhes e acompanhamento da solicitação de materiais.
+                <p class="text-sm text-gray-500">
+                    Solicitação
                 </p>
 
             </div>
 
+            <div class="flex flex-wrap items-center gap-3">
+                <h1 class="mt-1 text-2xl font-bold tracking-tight text-gray-950 sm:text-3xl">
+                    #{{ str_pad($solicitacao->id, 4, '0', STR_PAD_LEFT) }}
+                </h1>
 
-            {{-- STATUS --}}
+                {{-- STATUS --}}
+                <div class="inline-flex w-fit items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold {{ $status['class'] }}">
+                    <span class="h-2 w-2 rounded-full {{ $status['dot'] }}"></span>
 
-           <div class="inline-flex w-fit items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold {{ $status['class'] }}">
-
-                <span class="h-2 w-2 rounded-full {{ $status['dot'] }}"></span>
-
-                {{ $status['label'] }}
-
+                    {{ $status['label'] }}
+                </div>
             </div>
+            </h1>
+
+            <p class="mt-2 text-sm text-gray-500">
+                Detalhes e acompanhamento da solicitação de materiais.
+            </p>
 
         </div>
+
+        <a href="{{ route('solicitacoes.index') }}"
+            class="inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-200">
+
+            <svg class="h-4 w-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24">
+
+                <path stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+
+            </svg>
+
+            Voltar
+        </a>
 
     </div>
 

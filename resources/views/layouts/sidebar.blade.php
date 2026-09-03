@@ -111,17 +111,6 @@
             </a>
 
 
-            {{-- Movimentações --}}
-            <a href="#"
-               class="mb-1 flex items-center rounded-lg px-4 py-3 text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white">
-
-                <span class="mr-3">🔄</span>
-
-                Movimentações
-
-            </a>
-
-
             {{-- Usuários - somente líder --}}
             @if(Auth::user()->role === 'lider')
 

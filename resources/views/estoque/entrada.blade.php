@@ -8,36 +8,10 @@
 {{-- CABEÇALHO --}}
 {{-- ========================================= --}}
 
-<div class="mb-6 sm:mb-8">
+<div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
-    <a
-        href="{{ route('estoque.index') }}"
-        class="inline-flex items-center gap-2 text-sm font-medium text-gray-500 transition hover:text-orange-500"
-    >
-
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-4 w-4"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-        >
-            <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M15 19l-7-7 7-7"
-            />
-        </svg>
-
-        Voltar para o estoque
-
-    </a>
-
-
-    <div class="mt-5">
-
-        <p class="text-sm font-semibold text-orange-500">
+    <div>
+        <p class="mb-1 text-sm font-semibold text-orange-500">
             {{ Auth::user()->setor->nome }}
         </p>
 
@@ -48,8 +22,25 @@
         <p class="mt-2 text-sm text-gray-500 sm:text-base">
             Registre a entrada de vários materiais no estoque.
         </p>
-
     </div>
+
+    <a href="{{ route('estoque.index') }}"
+        class="inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-200">
+
+        <svg class="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24">
+
+            <path stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+
+        </svg>
+
+        Voltar
+    </a>
 
 </div>
 
