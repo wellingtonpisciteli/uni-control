@@ -231,20 +231,39 @@
                 </option>
 
 
-                <option
-                    value="setor"
-                    {{ old('role') === 'setor' ? 'selected' : '' }}
-                >
-                    Usuário
-                </option>
+                @if(Auth::user()->role === 'lider_setor')
 
+                    <option
+                        value="usuario_setor"
+                        {{ old('role') === 'usuario_setor' ? 'selected' : '' }}
+                    >
+                        Usuário do Setor
+                    </option>
 
-                <option
-                    value="lider"
-                    {{ old('role') === 'lider' ? 'selected' : '' }}
-                >
-                    Líder
-                </option>
+                    <option
+                        value="lider_setor"
+                        {{ old('role') === 'lider_setor' ? 'selected' : '' }}
+                    >
+                        Líder do Setor
+                    </option>
+
+                @elseif(Auth::user()->role === 'lider_compras')
+
+                    <option
+                        value="usuario_compras"
+                        {{ old('role') === 'usuario_compras' ? 'selected' : '' }}
+                    >
+                        Usuário de Compras
+                    </option>
+
+                    <option
+                        value="lider_compras"
+                        {{ old('role') === 'lider_compras' ? 'selected' : '' }}
+                    >
+                        Líder de Compras
+                    </option>
+
+                @endif
 
             </select>
 

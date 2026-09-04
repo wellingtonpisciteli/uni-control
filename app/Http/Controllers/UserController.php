@@ -54,7 +54,7 @@ class UserController extends Controller
 
             'role' => [
                 'required',
-                'in:setor,lider',
+                'in:usuario_setor,lider_setor,usuario_compras,lider_compras',
             ],
         ], [
             'name.required' => 'Informe o nome do usuário.',
@@ -119,7 +119,7 @@ class UserController extends Controller
 
             'role' => [
                 'required',
-                'in:setor,lider',
+                'in:usuario_setor,lider_setor,usuario_compras,lider_compras',
             ],
 
             'password' => [

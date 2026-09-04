@@ -156,7 +156,7 @@
                 </p>
 
                 <p class="mt-1 text-2xl font-bold text-gray-900">
-                    {{ $usuarios->where('role', 'lider')->count() }}
+                    {{ $usuarios->whereIn('role', ['lider_setor', 'lider_compras'])->count() }}
                 </p>
 
             </div>
@@ -197,7 +197,7 @@
                 </p>
 
                 <p class="mt-1 text-2xl font-bold text-gray-900">
-                    {{ $usuarios->where('role', 'setor')->count() }}
+                    {{ $usuarios->where('role', 'usuario_setor', 'usuario_compras')->count() }}
                 </p>
 
             </div>
@@ -401,13 +401,25 @@
                             {{-- Perfil --}}
                             <td class="px-6 py-4">
 
-                                @if($usuario->role === 'lider')
+                                @if($usuario->role === 'lider_setor')
 
                                     <span class="inline-flex items-center rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-700">
                                         Líder
                                     </span>
 
-                                @elseif($usuario->role === 'setor')
+                                @elseif($usuario->role === 'usuario_setor')
+
+                                    <span class="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-700">
+                                        Usuário
+                                    </span>
+
+                                @elseif($usuario->role === 'lider_compras')
+
+                                    <span class="inline-flex items-center rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-700">
+                                        Líder
+                                    </span>
+
+                                @elseif($usuario->role === 'usuario_compras')
 
                                     <span class="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-700">
                                         Usuário

@@ -65,7 +65,7 @@
         {{-- SETORES --}}
         {{-- ================================= --}}
 
-        @if(in_array(Auth::user()->role, ['setor', 'lider']))
+        @if(in_array(Auth::user()->role, ['usuario_setor', 'lider_setor']))
 
             <div class="mb-2 mt-6 px-4 text-xs font-semibold uppercase tracking-wider text-gray-500">
                 Meu Setor
@@ -112,7 +112,7 @@
 
 
             {{-- Usuários - somente líder --}}
-            @if(Auth::user()->role === 'lider')
+            @if(Auth::user()->role === 'lider_setor')
 
                 <a href="{{ route('usuarios.index') }}"
                    class="mb-1 flex items-center rounded-lg px-4 py-3 text-sm font-medium
@@ -133,7 +133,7 @@
         {{-- COMPRAS --}}
         {{-- ================================= --}}
 
-        @elseif(Auth::user()->role === 'compras')
+        @elseif(in_array(Auth::user()->role, ['usuario_compras', 'lider_compras']))
 
             <div class="mb-2 mt-6 px-4 text-xs font-semibold uppercase tracking-wider text-gray-500">
                 Compras
@@ -141,7 +141,7 @@
 
 
             {{-- Solicitações --}}
-            <a href="#"
+            <a href="{{ route('solicitacoesCompras.index') }}"
                class="mb-1 flex items-center rounded-lg px-4 py-3 text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white">
 
                 <span class="mr-3">📨</span>
@@ -171,6 +171,23 @@
                 Fornecedores
 
             </a>
+
+            {{-- Usuários - somente líder --}}
+            @if(Auth::user()->role === 'lider_compras')
+
+                <a href="{{ route('usuarios.index') }}"
+                   class="mb-1 flex items-center rounded-lg px-4 py-3 text-sm font-medium
+                        {{ request()->routeIs('usuarios.*')
+                            ? 'bg-orange-500 text-white'
+                            : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
+
+                    <span class="mr-3">👥</span>
+
+                    Usuários
+
+                </a>
+
+            @endif
 
 
         {{-- ================================= --}}

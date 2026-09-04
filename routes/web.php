@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SolicitacaoController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ComprasSolicitacaoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,7 +56,7 @@ Route::middleware('auth')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'verified', 'role:administrador,lider'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:administrador,lider_setor,lider_compras'])->group(function () {
 
     Route::get('/usuarios', [UserController::class, 'index'])
         ->name('usuarios.index');
@@ -84,7 +85,7 @@ Route::middleware(['auth', 'verified', 'role:administrador,lider'])->group(funct
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'verified', 'role:setor,lider'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:usuario_setor,lider_setor'])->group(function () {
 
 
     /*
@@ -155,7 +156,7 @@ Route::middleware(['auth', 'verified', 'role:setor,lider'])->group(function () {
         ->name('materiais.destroy');
         
 
-        /*
+    /*
     |--------------------------------------------------------------------------
     | Solicitações
     |--------------------------------------------------------------------------
@@ -172,6 +173,22 @@ Route::middleware(['auth', 'verified', 'role:setor,lider'])->group(function () {
 
     Route::get('/solicitacoes/{solicitacao}', [SolicitacaoController::class, 'show'])
         ->name('solicitacoes.show');
+
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| Compras
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'verified', 'role:usuario_compras,lider_compras'])->group(function () {
+
+    Route::get('/solicitacoes-compras', [ComprasSolicitacaoController::class, 'index'])
+        ->name('solicitacoesCompras.index');
+
+    Route::get('/solicitacoes-compras/{solicitacao}', [ComprasSolicitacaoController::class, 'show'])
+        ->name('solicitacoesCompras.show');
 
 });
 

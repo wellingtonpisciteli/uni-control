@@ -16,13 +16,49 @@ class DashboardController extends Controller
 
         $roleLabel = match ($user->role) {
             'administrador' => 'Administrador',
-            'compras' => 'Compras',
-            'setor' => 'Setor',
-            'lider' => 'Líder',
+            'usuario_setor' => 'Usuário do Setor',
+            'lider_setor' => 'Líder do Setor',
+            'usuario_compras' => 'Usuário de Compras',
+            'lider_compras' => 'Líder de Compras',
             default => ucfirst($user->role),
         };
 
         $setorNome = $user->setor?->nome;
+
+        if (in_array($user->role, ['usuario_compras', 'lider_compras'])) {
+
+            $solicitacoesPendentes = Solicitacao::query()
+                ->where('status', 'enviada')
+                ->count();
+
+            $solicitacoesEmAnalise = Solicitacao::query()
+                ->where('status', 'em_analise')
+                ->count();
+
+            $solicitacoesAprovadas = Solicitacao::query()
+                ->where('status', 'aprovada')
+                ->count();
+
+            $solicitacoesAtendidas = Solicitacao::query()
+                ->where('status', 'atendida')
+                ->count();
+
+            $solicitacoesRecentes = Solicitacao::query()
+                ->with(['setor', 'usuario'])
+                ->whereNotIn('status', ['rascunho'])
+                ->latest()
+                ->take(5)
+                ->get();
+
+            return view('dashboardCompras', [
+                'roleLabel' => $roleLabel,
+                'solicitacoesPendentes' => $solicitacoesPendentes,
+                'solicitacoesEmAnalise' => $solicitacoesEmAnalise,
+                'solicitacoesAprovadas' => $solicitacoesAprovadas,
+                'solicitacoesAtendidas' => $solicitacoesAtendidas,
+                'solicitacoesRecentes' => $solicitacoesRecentes,
+            ]);
+        }
 
         /*
         |--------------------------------------------------------------------------

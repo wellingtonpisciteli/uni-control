@@ -242,19 +242,39 @@
                 class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20"
             >
 
-                <option
-                    value="setor"
-                    {{ old('role', $usuario->role) === 'setor' ? 'selected' : '' }}
-                >
-                    Usuário
-                </option>
+                @if(Auth::user()->role === 'lider_setor')
 
-                <option
-                    value="lider"
-                    {{ old('role', $usuario->role) === 'lider' ? 'selected' : '' }}
-                >
-                    Líder
-                </option>
+                    <option
+                        value="usuario_setor"
+                        {{ old('role', $usuario->role) === 'usuario_setor' ? 'selected' : '' }}
+                    >
+                        Usuário do Setor
+                    </option>
+
+                    <option
+                        value="lider_setor"
+                        {{ old('role', $usuario->role) === 'lider_setor' ? 'selected' : '' }}
+                    >
+                        Líder do Setor
+                    </option>
+
+                @elseif(Auth::user()->role === 'lider_compras')
+
+                    <option
+                        value="usuario_compras"
+                        {{ old('role', $usuario->role) === 'usuario_compras' ? 'selected' : '' }}
+                    >
+                        Usuário de Compras
+                    </option>
+
+                    <option
+                        value="lider_compras"
+                        {{ old('role', $usuario->role) === 'lider_compras' ? 'selected' : '' }}
+                    >
+                        Líder de Compras
+                    </option>
+
+                @endif
 
             </select>
 

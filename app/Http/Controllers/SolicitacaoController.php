@@ -219,5 +219,4 @@ class SolicitacaoController extends Controller
         ));
     }
 
-
 }
